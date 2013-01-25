@@ -29,7 +29,11 @@
 	session_start();
 
 	$captcha_response 	= $_POST['captcha_response'];
-	$ip 				= $_POST['ip'];
+	
+	$ip 				= $_SERVER['REMOTE_ADDR'];
+	if(isset($_SERVER['HTTP_X_FORWARDED_FOR']))
+		$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+	
 	$request_id 		= $_POST['request_id'];
 	$email 				= $_POST['email'];
 
@@ -66,19 +70,23 @@
 		require_once( 'ipv_config_utils.php' );
 
 		ipv_db_connect();
-
+		
+		// use set_schema somewhere central
 		$ip 		= mysql_real_escape_string( $ip );
 		$email 		= mysql_real_escape_string( $email );
+		// exploit FIX
 		$request_id = intval( $request_id );
 
+		// escape $request_id with quotes
 		$insert_sql = 'INSERT INTO ' . IPV_APPEAL . ' VALUES ' .
-			"( NULL, now(), '$ip', $request_id, '$email' )";
+			"( NULL, now(), '$ip', '$request_id', '$email' )";
 
 		$q_str = 'SELECT appeal_id FROM '  . IPV_APPEAL . 
-			" WHERE request_id=$request_id";
+			" WHERE request_id='$request_id'";
 
 		$q_result = ipv_db_query( $q_str );
-
+		
+		// BAD WTF santa clause exploit
 		echo <<<EOR
 <meta http-equiv="Refresh" content="2; url=${_POST['return_to']}">
 EOR;
@@ -101,7 +109,7 @@ EOR;
 						'ipv_int_factor_name as factor, ' .
 						'ipv_int_category_name as category ' .
 					 'FROM ' . IPV_REQUEST_DETAIL .
-					 " WHERE ipv_int_request_id = $request_id ";
+					 " WHERE ipv_int_request_id = '$request_id' ";
 
 			$q_result = ipv_db_query( $query );
 
