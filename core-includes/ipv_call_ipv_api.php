@@ -1,10 +1,9 @@
 <?php
-//
+// 
 // call the IPViking api via streams
-//
+// 
 
 require_once( dirname( __FILE__ ) .  '/../core-includes/ipv_api_key.php' );
-
 
 function ipv_post( $url, $data, &$status_code, &$status_text )
 {
@@ -70,7 +69,7 @@ function ipv_call_ipv_api( $url, $api_key, $ip, & $status  ) {
 			'apikey' 	=> $api_key,
 			'method' 	=> 'ipq',
 			'ip' 	 	=> $ip,
-			'clientID' 	=> $_SERVER['SERVER_NAME']
+			'customID' 	=> $_SERVER['SERVER_NAME']
 		),
 		$status, 
 		$msg 
