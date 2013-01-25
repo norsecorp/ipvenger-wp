@@ -1,4 +1,6 @@
 <?php
+/* This file is not in use */
+/* Remove this file from repo */
 
 function ipv_msec_time() {
 
@@ -13,6 +15,7 @@ function ipv_msec_time() {
 
 function ipv_log ( $msg ) { 
 
+	// WTF
 	$fp = fopen( '/tmp/ipv_log.txt', 'a' );
 
 	$time_str = ipv_msec_time();
