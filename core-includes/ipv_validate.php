@@ -48,7 +48,7 @@ function ipv_validate(
 
 		// if $ip = "random" generate a random ip address and a random
 		// insertion time - to populate database for testing reports
-
+		// CANT use RFC1918 IP's will return error, 417. 
 		if ( $ip == 'random' ) {
 			$ip = rand( 1, 255 ) . '.' . rand( 0,255 ) . '.' .
 				rand( 0, 255 ) . '.' . rand( 0, 255 );
@@ -124,7 +124,7 @@ function ipv_validate(
 		}
 		
 		if ( ! $done ) {
-
+			// WHY XML???? NOT JSON
 			$result = iconv('UTF-8','UTF-8//IGNORE',$result);	// force UTF-8
 
 			// we sometimes get valid xml and sometimes get raw ampersand
@@ -301,12 +301,17 @@ function ipv_gatekeeper() {
 		( session_status() != PHP_SESSION_ACTIVE ) ) session_start();	
 
 	// get request IP address 
-	if ( isset($_SERVER['REMOTE_ADDR']) ) {
-
-		$ip =  $_SERVER['REMOTE_ADDR'];
-
+	$ip = $_SERVER['REMOTE_ADDR'];
+	if(isset($_SERVER['HTTP_X_FORWARDED_FOR']))
+		$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+	
+	if ( !empty($ip) ) {
+		
+		// CHECK ip for valid IP and not spoofed RFC 1918 (Private, reserved space)
 		// expire non-admin sessions according to schedule 
 
+		// rebuild with COOKIE or other WP spesific data store for session handling
+		
 		if ( isset( $_SESSION['ipv_status'] ) && 
 			 ! isset( $_SESSION['ipv_is_admin'] ) ) {
 
@@ -342,6 +347,9 @@ function ipv_gatekeeper() {
 			// redundant and undesirable API calls, e.g. whitelisted
 			// monitoring service "pings" should not cause an API call 
 
+			// REWRITE session and CACHE can not use session
+			// in shared enviroments to easy to hijack and POISON
+			// COOKIE is not good either, use DB layer for cache 
 			if ( ipv_ip_is_whitelisted( $ip ) ) {
 				$allow = true;
 			}
@@ -385,6 +393,8 @@ function ipv_gatekeeper() {
 	}
 
 	// no IP address is a death sentence
+	// we should not be here if invoked without IP 
+	// SAPI will set unknown 
 	ipv_reject( "Unknown IP" );
 
 }
