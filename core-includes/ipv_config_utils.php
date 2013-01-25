@@ -709,7 +709,7 @@ EOC;
 
 	// in some unusual configurations, wp-config is read-only yet we have
 	// permission to chmod it and can avoid manual intervention by doing so
-
+	// BEOS/SOLARIS/WIN/CRAY/ARM/BSD/	
 	if ( PHP_OS == "Linux" ) {
 		$old_perms = fileperms( $wp_config );	// save original permissions
 		$new_perms = $old_perms | 0x0090;		// user/group writable
