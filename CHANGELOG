@@ -1,0 +1,325 @@
+commit c28cdd36609ac25520c655e59b9e224b0ae8cfd8
+Author: sburkett <steven.burkett@sprydigital.com>
+Date:   Wed Jan 9 16:17:03 2013 -0600
+
+    Fix formatting on a cluetip
+
+commit 1067fae67a2356bff57195f040cecd80ddb6a345
+Author: sburkett <steven.burkett@sprydigital.com>
+Date:   Wed Jan 9 13:04:04 2013 -0600
+
+    fix appeal settings bug
+
+commit c654340a93a8939bcb399be4f209ad074c5bd7ad
+Author: sburkett <steven.burkett@sprydigital.com>
+Date:   Wed Jan 9 12:48:14 2013 -0600
+
+    fix column name in database build
+
+commit 7a8ff0670d42634c69570edd1acaf817eada1f8b
+Author: sburkett <steven.burkett@sprydigital.com>
+Date:   Wed Jan 9 12:28:06 2013 -0600
+
+    Add ability to turn appeals off
+    chmod wp-config to writable (if possible) to automate certain installs
+
+commit 4f3dda1c004914f9afb007a8184bb83d847a8756
+Author: sburkett <steven.burkett@sprydigital.com>
+Date:   Fri Jan 4 14:50:55 2013 -0600
+
+    Show correct reason when reloading general settings after a bad api key is stored.
+
+commit ee1949d12ce594313be15d8e4ec7507f27c09191
+Author: sburkett <steven.burkett@sprydigital.com>
+Date:   Fri Jan 4 14:04:22 2013 -0600
+
+    Fix a couple of typos, remove extraneous tooltip from daily summary graph
+
+commit 2096f200ceb2f58f59b278dfc97035f413ff1695
+Author: sburkett <steven.burkett@sprydigital.com>
+Date:   Fri Jan 4 12:13:36 2013 -0600
+
+    Change all instances of "e-mail" to "email"
+    Change "contact support" to "visit support"
+    Add links to support, account management and plugin site to api key error msgs
+
+commit de25308d18bfab12e21157e7c36fb08f44cd1a3e
+Author: sburkett <steven.burkett@sprydigital.com>
+Date:   Thu Jan 3 16:48:31 2013 -0600
+
+    Fix caching bug
+
+commit d07b0b0c05066ebe4cbfa82fcd4f0ffa7673ac91
+Author: sburkett <steven.burkett@sprydigital.com>
+Date:   Thu Jan 3 16:19:10 2013 -0600
+
+    Change label to span for better block page default styling
+
+commit 9f3d19deb377f1c6371cd5aa96395b08d5ae899d
+Author: sburkett <steven.burkett@sprydigital.com>
+Date:   Thu Jan 3 15:28:33 2013 -0600
+
+    Fix advanced settings map when a non-existent country (for example
+    "Anonymous Proxy" is blacklisted from the analytics page.
+
+commit 6764d9ab6265f318b5cf67eec1c6aae3a8c5f54e
+Merge: bf75696 4efd6e5
+Author: sburkett <steven.burkett@sprydigital.com>
+Date:   Thu Jan 3 14:06:19 2013 -0600
+
+    Merge branch 'master' of spryplayground.com:nrc-ipv-ph2
+
+commit bf7569663abfe864db2e121f89d8f9628d4333d7
+Author: sburkett <steven.burkett@sprydigital.com>
+Date:   Thu Jan 3 14:04:46 2013 -0600
+
+    Fix IP detail formatting under IE10
+    Set session even when whitelisted so admins don't see wp-config error message
+    Update custom site IPQ threshold with current ipq threshold on activation
+
+commit 4efd6e5cbee07a010e037b3c91b2d0aad2ff50ed
+Merge: db744a9 5d14ced
+Author: phil.cryer <phil@cryer.us>
+Date:   Thu Jan 3 11:10:34 2013 -0600
+
+    Merge branch 'master' of spryplayground.com:nrc-ipv-ph2
+
+commit db744a9d36949a7e9a5b806a38d87b8b26869f29
+Author: phil.cryer <phil@cryer.us>
+Date:   Thu Jan 3 11:10:11 2013 -0600
+
+    updated build version number, and upgrade.txt file output
+
+commit 5d14ced9cd6b4a6fd8f589e225fddaa76e86a815
+Author: sburkett <steven.burkett@sprydigital.com>
+Date:   Wed Jan 2 15:38:08 2013 -0600
+
+    Random starting point for cached captchas from different ips
+
+commit 749771d698a366d24168014ff4ee80b6f7c47707
+Merge: 62d68ba 6bd6ef8
+Author: sburkett <steven.burkett@sprydigital.com>
+Date:   Wed Jan 2 14:28:38 2013 -0600
+
+    Merge branch 'master' of spryplayground.com:nrc-ipv-ph2
+
+commit 62d68ba5e6a44ae7328c5a0227932e81d2ffcac3
+Author: sburkett <steven.burkett@sprydigital.com>
+Date:   Wed Jan 2 14:28:01 2013 -0600
+
+    new captcha caching files
+
+commit 9d880f0ca57d95d083ff9c91ce4c726e117fd234
+Author: sburkett <steven.burkett@sprydigital.com>
+Date:   Wed Jan 2 14:26:13 2013 -0600
+
+    Support captcha caching to mitigate against DDOS
+    fix excanvas for IE8 analytics display
+
+commit 6bd6ef892d4d1d028291c53b454f9f4413b08d9c
+Merge: 5dec416 732c1be
+Author: phil.cryer <phil@cryer.us>
+Date:   Sun Dec 30 13:05:12 2012 -0600
+
+    Merge branch 'master' of spryplayground.com:nrc-ipv-ph2
+
+commit 5dec4162f829599114c37d454ea9e03a18d283a1
+Author: phil.cryer <phil@cryer.us>
+Date:   Sun Dec 30 13:04:37 2012 -0600
+
+    added (H)our string to VERSION to differentiate when we have multiple
+    builds in one day
+
+commit 732c1be16f41b2c2b522719b84d43a004497c7ab
+Merge: cc00ece bd52b21
+Author: sburkett <steven.burkett@sprydigital.com>
+Date:   Fri Dec 28 15:08:14 2012 -0600
+
+    Merge branch 'master' of spryplayground.com:nrc-ipv-ph2
+
+commit cc00ece3692da43dbbff223db71ac0e85b1ab225
+Author: sburkett <steven.burkett@sprydigital.com>
+Date:   Fri Dec 28 15:06:51 2012 -0600
+
+    Fixed activation to support several wp instances sharing one mysql username
+    and table prefix
+
+commit bd52b21c9f49050e13b56bb87cabb091e238029c
+Merge: cef3fa6 4acc104
+Author: phil.cryer <phil@cryer.us>
+Date:   Fri Dec 28 11:56:24 2012 -0600
+
+    Merge branch 'master' of spryplayground.com:nrc-ipv-ph2
+
+commit cef3fa6690a450754c046ef59af3801eee415661
+Author: phil.cryer <phil@cryer.us>
+Date:   Fri Dec 28 11:56:04 2012 -0600
+
+    rm .git dir before zipping
+
+commit 4acc104025e408e8f44674108058f3876bae52f4
+Author: sburkett <steven.burkett@sprydigital.com>
+Date:   Fri Dec 28 10:24:56 2012 -0600
+
+    Changed button styles to completely override wordpress styling (partial fix for WP 3.5 sizing issues).
+    
+    Fixed e-mail validation to support pre-5.3 php on Windows servers (checkdnsrr not supported there)
+    
+    Fixed bugs in custom e-mail setting and custom message settings.
+
+commit 57f84362123cb5279af3d928374529a9cf1eae76
+Author: sburkett <steven.burkett@sprydigital.com>
+Date:   Fri Dec 21 15:42:39 2012 -0600
+
+    Fix the country blacklist fix
+
+commit 963dd9fd4c541422ae66637a25c52dc1188e9a30
+Author: sburkett <steven.burkett@sprydigital.com>
+Date:   Fri Dec 21 15:25:32 2012 -0600
+
+    Fix country blacklist problem
+
+commit 74bc5e2d9bbe961209c5d8e18ea55cdb581fab77
+Author: sburkett <steven.burkett@sprydigital.com>
+Date:   Fri Dec 21 14:38:19 2012 -0600
+
+    Continuing to refine (and fix) activation messages and recovery
+
+commit ece5b12d7ba0475b3de8cdabc866adeaad76ec9c
+Author: sburkett <steven.burkett@sprydigital.com>
+Date:   Fri Dec 21 13:33:08 2012 -0600
+
+    Fixed database update bug
+
+commit e9fed339e27f6ba72b53ad7c8242b00c4980a4bc
+Author: sburkett <steven.burkett@sprydigital.com>
+Date:   Fri Dec 21 12:38:23 2012 -0600
+
+    Improved error handling on installation and session errors.
+    Added cache flushing on blacklist/whitelist/IPQ changes
+    Final security updates (e.g. query string formats)
+    Improved session handling
+    Minor error and notices fixed
+    Updated IP lookup pop-up (more info and better styling)
+    Dynamic general settings info
+    Other minor stability and maintainability enhancements
+
+commit c5bfdc82521a0bc49f822aa5815abc2bbbc12850
+Author: sburkett <steven.burkett@sprydigital.com>
+Date:   Tue Dec 11 00:50:15 2012 -0600
+
+    Make blacklist/whitelist override short-term cache
+
+commit b69b5837631c1fd0397520b98c9e720374967ec8
+Author: sburkett <steven.burkett@sprydigital.com>
+Date:   Mon Dec 10 23:53:28 2012 -0600
+
+    Fix for the PHP fix (support for 5.4 "broke" 5.3 a little)
+
+commit 69288168d1cafc05c362d72ffe08eb64cb6982e2
+Author: sburkett <steven.burkett@sprydigital.com>
+Date:   Mon Dec 10 23:36:14 2012 -0600
+
+    Update forgotten version number
+
+commit 57b781943547e1322a4ab6b2ebb8dfe6cc7690d0
+Merge: 928b86d 3bcf7b7
+Author: sburkett <steven.burkett@sprydigital.com>
+Date:   Mon Dec 10 23:33:23 2012 -0600
+
+    Merge branch 'master' of spryplayground.com:nrc-ipv-ph2
+
+commit 928b86dd0e7d45aef2ea5f04f2c143105384b7ab
+Author: sburkett <steven.burkett@sprydigital.com>
+Date:   Mon Dec 10 23:29:48 2012 -0600
+
+    Switched all scripts and styles to use Wordpress enqueue/dqueue mechanism.  Added Wordpress readme.txt.
+
+commit 3bcf7b731053fe6af65ed4d1691471c0d207a188
+Author: sburkett <steven.burkett@sprydigital.com>
+Date:   Mon Dec 10 23:29:48 2012 -0600
+
+    Committing additional files for 12-10 beta (no new changes)
+
+commit da9a73607ac3bfebc598a6a2c7ff0b41c2ef9935
+Author: sburkett <steven.burkett@sprydigital.com>
+Date:   Mon Dec 10 23:24:47 2012 -0600
+
+    Support added for "sessionless" short-term IP cacheing
+    Added database-driven tooltips on analytics page for factors and categories.
+    Fixes to support PHP 5.4.6.  Minor UI enhancements and bug fixes.
+
+commit 5ac4b431da177ba9f2d19a1a0814b5e03045fdba
+Author: sburkett <steven.burkett@sprydigital.com>
+Date:   Thu Dec 6 17:13:50 2012 -0600
+
+    Fixed timestamp key creation to support IP cacheing
+
+commit ab3528fb34f41a4c5bd020e0274520ad7dbba45f
+Author: Steven Burkett <steven.burkett@sprydigital.com>
+Date:   Thu Dec 6 14:24:09 2012 -0600
+
+    Added IP cacheing and dynamic category tooltips.  Fixed bug in API HTTP
+    response parsing that was causing intermittent XML related errors.  Fixed
+    e-mail customization bug.  Deleted obsolete files.
+
+commit 3e77113e76b4cc1d943f033b0b8db8c874a16f0f
+Author: phil.cryer <phil@cryer.us>
+Date:   Tue Nov 6 14:59:13 2012 -0600
+
+    updating to new tag, 11-05
+
+commit d4a71913c54f41d9263c06b127538b968fa3e3b0
+Author: phil.cryer <phil@cryer.us>
+Date:   Tue Nov 6 14:56:28 2012 -0600
+
+    updating code to 1.0 Beta 11-05
+
+commit fa32f500661427e53319d07c6e694e067f870a3a
+Author: phil.cryer <phil@cryer.us>
+Date:   Fri Nov 2 12:15:54 2012 -0500
+
+    pushing tags up once they're commited
+
+commit d2a9e09efa8ed7da5de9485c385a78e7a223a197
+Author: phil.cryer <phil@cryer.us>
+Date:   Fri Nov 2 12:09:48 2012 -0500
+
+    updated with VERSION file in the zip now, and a git tag command during
+    the build to tie both together
+
+commit 59767c15277a2bd3c09096f0693e8bab51d9fdce
+Author: phil.cryer <phil@cryer.us>
+Date:   Fri Nov 2 12:02:11 2012 -0500
+
+    large update, uses new versioning
+
+commit cbb140759c9a4c1827ede6745c6c7d7a5ef7f65f
+Author: Phil Cryer <phil.cryer@sprydigital.com>
+Date:   Fri Oct 19 10:17:10 2012 -0500
+
+    took out debug exit
+
+commit 0e900d55107a6c7a254cd59bc8f4eb7b87636f15
+Author: Phil Cryer <phil.cryer@sprydigital.com>
+Date:   Fri Oct 19 10:16:12 2012 -0500
+
+    adding build script to git
+
+commit 2fba53192a64a431579114ea268c4f5a7061f7cb
+Author: pcryer <phil@cryer.us>
+Date:   Wed Sep 5 14:08:42 2012 -0500
+
+    updated install doc to mirror pdf
+
+commit adb45662ac29ef54278941f4422b4803d4b429e7
+Author: pcryer <phil@cryer.us>
+Date:   Wed Sep 5 13:48:46 2012 -0500
+
+    updated code to latest
+
+commit c6312f6f5817d0e91abe257e335a9401e98665d6
+Author: Julia Koelsch <julia.koelsch@sprydigital.com>
+Date:   Sun Jul 22 16:02:02 2012 -0500
+
+    Initializing IPVenter Product - WordPress Plugin repository

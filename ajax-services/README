@@ -1,0 +1,3 @@
+AJAX services go here
+
+IMPORTANT -  Any new AJAX service should include ipv_pre_ajax.php as early as possible to ensure that session keys and user authority are correct.
