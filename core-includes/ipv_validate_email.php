@@ -11,7 +11,8 @@ function ipv_validate_email( $email ) {
     /* validate email format and DNS domain record */
 
     $email_valid = false;
-
+	
+    // BAD for earlier PHP versions exploits    
     if ( filter_var( $email, FILTER_VALIDATE_EMAIL ) )
     {
         $domain = substr($email, strrpos( $email, '@' ) + 1);
