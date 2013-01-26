@@ -105,7 +105,7 @@ function ipv_get_next_captcha_index( $ip ) {
 	ipv_db_connect();
 
 	$count = ipv_get_captcha_cache_size();
-
+	/* EXPLOIT */
 	$q_str = 'SELECT id FROM ' . IPV_CAPTCHA_SERVED . 
 			 " WHERE ip = '$ip'";
 
