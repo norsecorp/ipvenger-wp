@@ -36,7 +36,7 @@
             $page = plugin_basename($parent_slug);
             echo admin_url("admin.php?page=${page}__adv_settings" );
         ?>">' + 
-		"Advanced Settings</a>.</strong>"
+		"Advanced Settings</a>.</strong>";
 
 	var preview_url = "<?php echo $GLOBALS['ipv_dashboard_home'] 
 			. '/ipv_block_demo.php';?>";
@@ -330,8 +330,8 @@
 		jQuery( "#ipv-activate-button").hide();
 		jQuery( "#license-input-container").hide();
 
-		jQuery( "#ipv-license-background-div" ).css("height", "auto")
-		jQuery( "#ipv-license-background-div" ).addClass("key-invalid")
+		jQuery( "#ipv-license-background-div" ).css("height", "auto");
+		jQuery( "#ipv-license-background-div" ).addClass("key-invalid");
 
 		ipv_key_is_valid = false;		
 
@@ -752,7 +752,7 @@
 					echo plugins_url( 'images', dirname( __FILE__ ) )
 				?>/tooltip_question.png" alt="?"
 				class="ipv-title-cluetip"
-				title="Disabling Appeals||By default, a blocked user can gain temporary access to your site by providing a valid e-mail address and responding to a CAPTCHA.|This allows legitimate human users to access your site even though they may have a high IPQ score, while still stopping most automated attackers (Bots)|Checking this box will turn off the ability for a user to appeal.  This will increase security but may also block some legitimate users from accessing the site."
+				title="Disabling Appeals||By default, a blocked user can gain temporary access to your site by providing a valid e-mail address and responding to a CAPTCHA.|This allows legitimate human users to access your site even though they may have a high IPQ score, while still stopping most automated attackers (Bots)|Checking this box will turn off the ability for a user to appeal.  This will increase security but may also block some legitimate users from accessing the site.">
 
 			</div>
 		</div>
@@ -775,7 +775,7 @@
 							<?php if ( ipv_email_is_custom() )
 								echo ' checked '; ?>
 							onclick="ipv_prep_custom_email( true )"
-						\>
+						/>
 
 						Custom email 
 						<div style="padding-left:10px">
@@ -794,7 +794,7 @@
 										echo 'value = "Email Address" ';
 										echo 'disabled = "disabled"';
 									}
-								?>"
+								?>
 							/>
 							<div id="ipv-email-button-container">
 								<input type="button" class="ipv-primary" 
