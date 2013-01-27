@@ -5,8 +5,7 @@
 
 	/** return the next captcha from the cache for the given IP **/
 
-	/* EXPLOIT */
-	$ip = $_GET[ 'ip' ];
+	$ip = $_SERVER['REMOTE_ADDR'];
 
 	ipv_get_next_captcha( $ip, $captcha_image_data, $captcha_response );
 
