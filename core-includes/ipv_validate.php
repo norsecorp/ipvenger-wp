@@ -6,10 +6,10 @@
  * and log the request to the reporting database
  *
  * @param   string 	$ip					address to validated
- * @param	boolean	&$allow				true: allow request, false: deny 
+ * @param	boolean	&$allow				true: allow request, false: deny
  * @param	string	&$terse_reason		short reason for allow/deny
  * @param	int		&$risk_factor		IPQ score returned by IPV api
- * @param	string	&$risk_color		risk color from IPV api 
+ * @param	string	&$risk_color		risk color from IPV api
  * @param	string	&$country			country of origin (IPV api)
  * @param	string	&$primary_factor	highest weight factor affecting IPQ
  * @param	string	&$primary_category_name		highest weight category in IPQ
@@ -22,7 +22,7 @@
  *
 */
 
-// core php functionality 
+// core php functionality
 require_once( 'ipv_call_ipv_api.php' );
 require_once( 'ipv_config_utils.php' );
 
@@ -30,25 +30,25 @@ require_once( dirname( __FILE__ ) . '/../cms-includes/ipv_db_utils.php' );
 
 // cms dependent functions
 
-function ipv_validate( 
-	$ip, 
-	&$allow, 
-	&$terse_reason, 
-	&$risk_factor, 
-	&$risk_color, 
-	&$country, 
-	&$primary_factor, 
-	&$primary_category_name, 
-	&$request_id, 
+function ipv_validate(
+	$ip,
+	&$allow,
+	&$terse_reason,
+	&$risk_factor,
+	&$risk_color,
+	&$country,
+	&$primary_factor,
+	&$primary_category_name,
+	&$request_id,
 	$insert_request='insert',
-	$insert_time='actual_time' ) 
+	$insert_time='actual_time' )
 {
 
 		$done = false;
 
 		// if $ip = "random" generate a random ip address and a random
 		// insertion time - to populate database for testing reports
-		// CANT use RFC1918 IP's will return error, 417. 
+		// CANT use RFC1918 IP's will return error, 417.
 		if ( $ip == 'random' ) {
 			$ip = rand( 1, 255 ) . '.' . rand( 0,255 ) . '.' .
 				rand( 0, 255 ) . '.' . rand( 0, 255 );
@@ -61,8 +61,8 @@ function ipv_validate(
 		$primary_category_name = 'None';
 		$primary_category_id = '-1';
 
-		$q_result = ipv_db_query( 
-			'SELECT ipv_server_url, api_key, api_valid ' . 
+		$q_result = ipv_db_query(
+			'SELECT ipv_server_url, api_key, api_valid ' .
 			'FROM ' . IPV_GLOBAL_SETTINGS );
 
 		if ( ! $q_result )  $status = 5000;
@@ -70,12 +70,12 @@ function ipv_validate(
 
 			extract( ipv_db_fetch_assoc( $q_result ) );
 
-			$result = ipv_call_ipv_api( 
+			$result = ipv_call_ipv_api(
 					$ipv_server_url, $api_key, $ip, $status );
 
 		}
 
-		// deal with IPV status codes 
+		// deal with IPV status codes
 
 		switch ( $status ) {
 
@@ -88,7 +88,7 @@ function ipv_validate(
 				break;
 
 			case 417:				// Invalid IP address - disallow
-				$allow = false;	
+				$allow = false;
 				$reason = $terse_reason = 'Invalid IP';
 				$done = true;
 				break;
@@ -99,8 +99,8 @@ function ipv_validate(
 				$done = true;
 				break;
 
-			// api key errors - allow 
-			case 400:				
+			// api key errors - allow
+			case 400:
 			case 401:
 			case 402:
 				$allow = true;
@@ -120,9 +120,9 @@ function ipv_validate(
 				$reason = $terse_reason = "Error $status";
 				$done = true;
 				break;
-			
+
 		}
-		
+
 		if ( ! $done ) {
 			// WHY XML???? NOT JSON
 			$result = iconv('UTF-8','UTF-8//IGNORE',$result);	// force UTF-8
@@ -142,9 +142,9 @@ function ipv_validate(
 			else {
 
 				// get column names from the detail record except internal ones
-				$q_result = ipv_db_query( 
+				$q_result = ipv_db_query(
 					'SELECT column_name FROM information_schema.columns ' .
-					'WHERE table_name = \'' . IPV_REQUEST_DETAIL . '\' ' . 
+					'WHERE table_name = \'' . IPV_REQUEST_DETAIL . '\' ' .
 					'and column_name NOT LIKE \'ipv_int_%\' ' );
 
 				// for each name, pull the data out of the xml with xpath
@@ -180,7 +180,7 @@ function ipv_validate(
 				$risk_factor = substr( $values['risk_factor'], 1, -1 );
 				$risk_color = $values['risk_color'];
 				$country = $values['country'];
-			
+
 				// if there are category details, find the highest weighted
 				$arn = $risk->xpath('//entries/reason/category_name');
 				$ari = $risk->xpath('//entries/reason/category_id');
@@ -198,13 +198,13 @@ function ipv_validate(
 					}
 				}
 
-				$primary_category_name = 
+				$primary_category_name =
 					ipv_escape_string( $primary_category_name );
 
-				$primary_category_id = 
+				$primary_category_id =
 					ipv_escape_string( $primary_category_id );
 
-				$primary_category_factor = 
+				$primary_category_factor =
 					ipv_escape_string( $primary_category_factor );
 
 				// check blacklists first, then IPQ score
@@ -221,7 +221,7 @@ function ipv_validate(
 					$allow = false;
 					$reason = $terse_reason = 'IPQ Score';
 				}
-				else { 
+				else {
 					$allow = true;
 					$reason = $terse_reason = 'IPQ Score';
 				}
@@ -244,34 +244,34 @@ function ipv_validate(
 			else {
 
 				if ( $insert_time == 'random_time' ) {
-					// if this is a random ip address - set the time to 
+					// if this is a random ip address - set the time to
 					// something random in the last 10 days
 					$t = strtotime( trim( $values['timestamp'], '"' ) );
 					$t -= rand( 0, 10*24*60*60 );
-					$values['ipv_int_time'] = '"' . 
+					$values['ipv_int_time'] = '"' .
 						date( 'Y-m-d H:i:s', $t ) . '"';
-					$values['ipv_int_date'] = '"' . 
+					$values['ipv_int_date'] = '"' .
 						date( 'Y-m-d', $t ) . '"';
 				}
 				else {
 					// otherwise timestamp is the user specified time
 					$t = strtotime( $insert_time );
-					$values['ipv_int_time'] = '"' . 
+					$values['ipv_int_time'] = '"' .
 						date( 'Y-m-d H:i:s', $t ) . '"';
-					$values['ipv_int_date'] = '"' . 
+					$values['ipv_int_date'] = '"' .
 						date( 'Y-m-d', $t ) . '"';
 				}
-			}	
+			}
 
-			$insert_sql = 'INSERT INTO ' . IPV_REQUEST_DETAIL . ' ( ' . 
+			$insert_sql = 'INSERT INTO ' . IPV_REQUEST_DETAIL . ' ( ' .
                 implode( array_keys( $values ), ',' ) .
-				', ipv_int_category_name, ipv_int_category_id, ' . 
+				', ipv_int_category_name, ipv_int_category_id, ' .
 				' ipv_int_factor_name, ipv_int_disp, ' .
-				' ipv_int_disp_reason ) VALUES ( ' . 
+				' ipv_int_disp_reason ) VALUES ( ' .
                 implode( array_values( $values ), ',' ) .
-				", '$primary_category_name', '$primary_category_id' " . 
+				", '$primary_category_name', '$primary_category_id' " .
 				", '$primary_factor_name', $disp, '$terse_reason' )";
-			
+
 			$q_result = ipv_db_query( $insert_sql );
 
 			$request_id = ipv_insert_id();
@@ -290,29 +290,29 @@ function ipv_validate(
  *
  *  allow or deny the request - if ipviking allows the request just return,
  *  otherwise  put up the error page and die
- * 
+ *
 */
-function ipv_gatekeeper() { 
+function ipv_gatekeeper() {
 
 	if ( defined( 'IPV_IN_AJAX' ) || ! ipv_plugin_is_active() ) return;
 
-	// only call the api once per session 
-	if ( ( ! function_exists( "session_status" ) ) ||  
-		( session_status() != PHP_SESSION_ACTIVE ) ) session_start();	
+	// only call the api once per session
+	if ( ( ! function_exists( "session_status" ) ) ||
+		( session_status() != PHP_SESSION_ACTIVE ) ) session_start();
 
-	// get request IP address 
+	// get request IP address
 	$ip = $_SERVER['REMOTE_ADDR'];
-	if(isset($_SERVER['HTTP_X_FORWARDED_FOR']))
-		$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-	
+// 	if(isset($_SERVER['HTTP_X_FORWARDED_FOR']))
+// 		$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+
 	if ( !empty($ip) ) {
-		
+
 		// CHECK ip for valid IP and not spoofed RFC 1918 (Private, reserved space)
-		// expire non-admin sessions according to schedule 
+		// expire non-admin sessions according to schedule
 
 		// rebuild with COOKIE or other WP spesific data store for session handling
-		
-		if ( isset( $_SESSION['ipv_status'] ) && 
+
+		if ( isset( $_SESSION['ipv_status'] ) &&
 			 ! isset( $_SESSION['ipv_is_admin'] ) ) {
 
 			$create_time = $_SESSION['ipv_create_time'];
@@ -326,7 +326,7 @@ function ipv_gatekeeper() {
 				unset( $_SESSION['ipv_status'] );
 			}
 			else if ( $create_time < ipv_cache_last_invalidated() )
-			{ 
+			{
 				session_destroy();
 				unset( $_SESSION['ipv_status'] );
 			}
@@ -336,27 +336,27 @@ function ipv_gatekeeper() {
 		if ( isset( $_SESSION['ipv_status'] ) ) {
 
 			if ( $_SESSION['ipv_status'] == 'allow' ) {
-				return;	
+				return;
 			}
 			else  ipv_reject( $ip );
 
 		}
 		else {
 
-			// first check short-term cache and whitelist to minimize 
+			// first check short-term cache and whitelist to minimize
 			// redundant and undesirable API calls, e.g. whitelisted
-			// monitoring service "pings" should not cause an API call 
+			// monitoring service "pings" should not cause an API call
 
 			// REWRITE session and CACHE can not use session
 			// in shared enviroments to easy to hijack and POISON
-			// COOKIE is not good either, use DB layer for cache 
+			// COOKIE is not good either, use DB layer for cache
 			if ( ipv_ip_is_whitelisted( $ip ) ) {
 				$allow = true;
 			}
-			else if ( ipv_ip_is_cached( $ip, $cached_status, $id ) ) 
+			else if ( ipv_ip_is_cached( $ip, $cached_status, $id ) )
 			{
 					$allow = (bool) $cached_status;
-			} 
+			}
 			else {
 				$rc = ipv_validate( $ip,
 									 $allow,
@@ -377,7 +377,7 @@ function ipv_gatekeeper() {
 					$msg_type = 'proxy';
 				}
 				else $msg_type = 'general';
-		
+
 				$_SESSION['ipv_status'] = 'deny';
 				$_SESSION['ipv_disposition'] = $t;
 				$_SESSION['ipv_ip'] = $ip;
@@ -393,15 +393,15 @@ function ipv_gatekeeper() {
 	}
 
 	// no IP address is a death sentence
-	// we should not be here if invoked without IP 
-	// SAPI will set unknown 
+	// we should not be here if invoked without IP
+	// SAPI will set unknown
 	ipv_reject( "Unknown IP" );
 
 }
 
 function ipv_reject( $ip ) {
 
-	require_once( dirname( __FILE__ ) .  
+	require_once( dirname( __FILE__ ) .
 		'/../cms-includes/ipv_block_page.php' );
 
     $request_id = $_SESSION['ipv_request_id'];
@@ -413,11 +413,11 @@ function ipv_reject( $ip ) {
 		$disp = "IP Blacklist";
 
 	ipv_echo_block(
-		$request_id, 
+		$request_id,
 		$msg_type,
 		$disp,
 		$ip,
-		$return_to		
+		$return_to
 	);
 
 	die();
