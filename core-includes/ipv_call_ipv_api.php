@@ -1,7 +1,7 @@
 <?php
-// 
+//
 // call the IPViking api via streams
-// 
+//
 
 require_once( dirname( __FILE__ ) .  '/../core-includes/ipv_api_key.php' );
 
@@ -9,16 +9,26 @@ function ipv_post( $url, $data, &$status_code, &$status_text )
 {
 
 	// we cannot rely on curl, nor on allow_url_fopen so use sockets
+    // TODO - why not use parse_url? - jb
 
 	$url_words = explode( '/', $url );
 	$host = $url_words[2];
 	$uri  = '/' . $url_words[3] . '/';
-	$fp = @fsockopen( $host, 80 );
+	$ferrno = $ferrstr = NULL;
+	if ( WP_DEBUG ) {
+	    $fp = fsockopen( $host, 80, $ferrno, $ferrstr, 3);
+	    $status_code = $ferrno;
+	    $status_text = $ferrstr;
+	} else {
+	    $fp = @fsockopen( $host, 80, $ferrno, $ferrstr, 3);
+	}
 
 	if ( ! $fp ) {
-		$status_code = 1000;
-		$status_text = 'Cannot connect to IPV API Server ' + $url;
-		return null;	
+	    if ( !WP_DEBUG ) {
+	        $status_code = 1000;
+	        $status_text = 'Cannot connect to IPV API Server ' + $url;
+	    }
+		return null;
 	}
 
 	$content = http_build_query($data);
@@ -42,7 +52,7 @@ function ipv_post( $url, $data, &$status_code, &$status_text )
 	while (!feof($fp)) {
 		$in = fgets($fp, 1024);
 		if ( strpos( $in, ':' ) === FALSE ) break;
-	}	
+	}
 
 	$response = "";
 
@@ -51,7 +61,7 @@ function ipv_post( $url, $data, &$status_code, &$status_text )
 		$in = fgets($fp, 1024);
 		if ( strpos( $in, '<' ) === FALSE ) continue;
 		$response .= $in;
-	}	
+	}
 
 	return $response;
 
@@ -63,16 +73,16 @@ function ipv_call_ipv_api( $url, $api_key, $ip, & $status  ) {
 
 	if ( $api_key == '' ) return NULL;
 
-	$result = ipv_post( 
-		$url, 	
-		array ( 
+	$result = ipv_post(
+		$url,
+		array (
 			'apikey' 	=> $api_key,
 			'method' 	=> 'ipq',
 			'ip' 	 	=> $ip,
 			'customID' 	=> $_SERVER['SERVER_NAME']
 		),
-		$status, 
-		$msg 
+		$status,
+		$msg
 	);
 
 	// if status indicates a bad or expired API key, flag it invalid in the db
