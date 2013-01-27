@@ -1,32 +1,55 @@
 <?php
 
 /**
- * function ipv_validate_email - syntax and mx record check on 
- * 
- * @param email string - email address to validate 
- * 
+ * function ipv_validate_email - syntax and mx record check on
+ *
+ * @param email string - email address to validate
+ *
 */
 function ipv_validate_email( $email ) {
 
-    /* validate email format and DNS domain record */
+    do {
+        if (!$email) {
+            break;
+        }
 
-    $email_valid = false;
-	
-    // BAD for earlier PHP versions exploits    
-    if ( filter_var( $email, FILTER_VALIDATE_EMAIL ) )
-    {
-        $domain = substr($email, strrpos( $email, '@' ) + 1);
+        $atIndex = strrpos($email, "@");
 
-		// Windows servers with php < 5.3.0 don't support checkdnsrr
-		if ( function_exists( "checkdnsrr" ) ) {
-			if ( (checkdnsrr( $domain,'MX') || checkdnsrr($domain, 'A') ) ) {
-				$email_valid = true;
-			}
-		}
-		else $email_valid = true;
-    }
+        if (is_bool($atIndex) && !$atIndex) {
+            break;
+        } else {
+            $domain = substr($email, $atIndex+1);
+            $local = substr($email, 0, $atIndex);
+        }
 
-	return $email_valid;
+        $localLen = strlen($local);
+        $domainLen = strlen($domain);
+
+        if ($localLen < 1 || $localLen > 64) {
+            break;
+        } else if ($domainLen < 1 || $domainLen > 255) {
+            break;
+        }
+
+        if (!preg_match('/^(\\\\.|[A-Za-z0-9!#%&`_=\\/$\'*+?^{}|~.-])+$/', str_replace("\\\\","",$local))) {
+            if (!preg_match('/^"(\\\\"|[^"])+"$/', str_replace("\\\\","",$local))) {
+                break;
+            }
+        }
+
+        if (!preg_match('/^[A-Za-z0-9\\-\\.]+$/', $domain)) {
+            break;
+        } else if (preg_match('/\\.\\./', $domain)) {
+            break;
+        } else if (function_exists( "checkdnsrr" ) && !(checkdnsrr($domain,"MX") || checkdnsrr($domain, "A"))) {
+            break;
+        }
+
+        return true;
+
+    } while (FALSE);
+
+    return false;
 
 }
 
