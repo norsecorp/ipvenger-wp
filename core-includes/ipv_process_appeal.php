@@ -49,6 +49,14 @@
 		$captcha_valid = true;
 	}
 
+	$return_to = html_entity_decode(''.$_POST['return_to']);
+	if (preg_match("/^(?:(?:\w+:)(\/\/))/", $return_to)) {
+	    $return_to = parse_url($return_to, PHP_URL_PATH); // this is still probably not the most secure - jb
+	} else {
+	    $return_to = preg_replace("/(?:\?|%3F).*$/u", '', $return_to);
+	}
+	$return_to = ltrim('/'. rawurlencode($return_to), '/');
+
 	/* if email and captcha pass, insert the appeal and send notify email */
 
 	if ( $email_valid && $captcha_valid ) {
@@ -84,15 +92,7 @@
 
 		$q_result = ipv_db_query( $q_str );
 
-		$return = html_entity_decode(''.$_POST['return_to']);
-		if (preg_match("/^(?:(?:\w+:)(\/\/))/", $return)) {
-		    $return = parse_url($return, PHP_URL_PATH); // this is still probably not the most secure - jb
-		} else {
-		    $return = preg_replace("/(?:\?|%3F).*$/u", '', $return);
-		}
-		$return = ltrim('/'. rawurlencode($return), '/');
-
-		echo '<meta http-equiv="Refresh" content="2; url=' . $return . '">';
+		echo '<meta http-equiv="Refresh" content="2; url=' . $return_to . '">';
 
 		if ( ( $q_result ) && ( ipv_db_num_rows( $q_result ) > 0 ) ) {
 			echo 'Your appeal is on file for review by the site administrator.';
@@ -170,7 +170,7 @@ EOM;
 <script type="text/javascript">
 alert( "A valid email address and CAPTCHA response are required to submit an appeal." );
 </script>
-<meta http-equiv="Refresh" content="0; url=${_POST['return_to']}">
+<meta http-equiv="Refresh" content="0; url=$return_to">
 EOM;
 
 	}

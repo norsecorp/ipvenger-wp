@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 /**
  *
@@ -17,12 +17,17 @@
     require_once( dirname( __FILE__ ) .
         '/../cms-includes/ipv_cms_workarounds.php' );
 
-	require_once( dirname( __FILE__ ) .  
+	require_once( dirname( __FILE__ ) .
 		'/../core-includes/ipv_config_utils.php' );
 
-	require_once( dirname( __FILE__ ) .  
+	require_once( dirname( __FILE__ ) .
 		'/../cms-includes/ipv_db_utils.php' );
-	
+
+	if((isset($_POST['total_blocked']) && preg_match('/[^\d\.]+/', $_POST['total_blocked'])) || (isset($_POST['total_requests']) && preg_match('/[^\d\.]+/', $_POST['total_requests']))) {
+	    echo 'Invalid POST data';
+	    exit;
+	}
+
 	ipv_db_connect();
 
 	$country_labels = array();
@@ -69,11 +74,11 @@
 		$i++;
 	}
 
-	$data = array( 
-		'country_labels' => $country_labels, 
-		'country_ipqs' => $country_ipqs, 
-		'country_block' => $country_block, 
-		'country_total' => $country_total, 
+	$data = array(
+		'country_labels' => $country_labels,
+		'country_ipqs' => $country_ipqs,
+		'country_block' => $country_block,
+		'country_total' => $country_total,
 		'country_pct_block' => $country_pct_block,
 		'country_pct_total' => $country_pct_total
 	);
