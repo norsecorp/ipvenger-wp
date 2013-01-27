@@ -74,8 +74,8 @@ function ipv_update_site_ipq( $site, $ipq ) {
 
 	ipv_db_connect();
 
-	$ipq = mysql_real_escape_string( $ipq );
-	$site = mysql_real_escape_string( $site );
+	$ipq = ipv_escape_string( $ipq );
+	$site = ipv_escape_string( $site );
 
 	$q_result = ipv_db_query( 
 		'UPDATE ' . IPV_SITE_TYPE . " SET ipq_level = '$ipq' " . 
@@ -102,7 +102,7 @@ function ipv_get_site_type_by_name(
 
 	ipv_db_connect();
 
-	$short_name = mysql_real_escape_string( $short_name );
+	$short_name = ipv_escape_string( $short_name );
 
 	$q_result = ipv_db_query( 
 		'SELECT  ' . 
@@ -179,7 +179,7 @@ function ipv_set_site_type( $site_type ) {
 
 	ipv_db_connect();
 
-	$site_type = mysql_real_escape_string( $site_type );
+	$site_type = ipv_escape_string( $site_type );
 
 	$q_result = ipv_db_query( 'UPDATE ' . IPV_GLOBAL_SETTINGS .
         " SET site_type='$site_type' " . 
@@ -202,7 +202,7 @@ function ipv_set_default_risk( $risk ) {
 
 	ipv_db_connect();
 
-	$risk = mysql_real_escape_string( $risk );
+	$risk = ipv_escape_string( $risk );
 
 	$q_result = ipv_db_query( 'UPDATE ' . IPV_GLOBAL_SETTINGS .
         " SET default_risk_threshold='$risk' " . 
@@ -231,7 +231,7 @@ function ipv_get_rules_array( $rule_type, $field ) {
 
 	$result = array();
 
-	$field 		= mysql_real_escape_string( $field );
+	$field 		= ipv_escape_string( $field );
 
 	if ( $rule_type == 'whitelist' ) $action_code="allow";
 	else $action_code="deny";
@@ -305,10 +305,10 @@ function ipv_add_exception( $field_type, $mask, $mask_type, $action ) {
 		ipv_db_connect();
 
 		$table		= IPV_EXCEPTION;
-		$mask 		= mysql_real_escape_string( $mask );
-		$mask_type	= mysql_real_escape_string( $mask_type );
-		$field_type = mysql_real_escape_string( $field_type );
-		$action		= mysql_real_escape_string( $action );
+		$mask 		= ipv_escape_string( $mask );
+		$mask_type	= ipv_escape_string( $mask_type );
+		$field_type = ipv_escape_string( $field_type );
+		$action		= ipv_escape_string( $action );
 
 		$query_str = "INSERT INTO $table VALUES " . 
 			"( NULL, '$action', '$mask', '$mask_type', '$field_type')";
@@ -345,8 +345,8 @@ function ipv_delete_exception( $type, $mask ) {
 
 		ipv_db_connect();
 
-		$mask  = mysql_real_escape_string( $mask );
-		$type  = mysql_real_escape_string( $type );
+		$mask  = ipv_escape_string( $mask );
+		$type  = ipv_escape_string( $type );
 
 		$q_result = ipv_db_query( 'DELETE FROM $table ' .
 			"WHERE mask='$mask' AND excp_type='$type'" );
@@ -370,7 +370,7 @@ function ipv_delete_by_mask ( $type, $mask ) {
 
 	$table = IPV_EXCEPTION;
 
-	$mask = mysql_real_escape_string( $mask );
+	$mask = ipv_escape_string( $mask );
 	
 	ipv_db_query( "DELETE FROM $table WHERE mask = '$mask' " );
 
@@ -393,7 +393,7 @@ function ipv_delete_by_key ( $type, $key ) {
 
 	$table = IPV_EXCEPTION;
 
-	$key = mysql_real_escape_string( $key );
+	$key = ipv_escape_string( $key );
 
 	ipv_db_query( "DELETE FROM $table WHERE id = '$key' " );
 
@@ -417,7 +417,7 @@ function ipv_get_block_msg( $type ) {
 
 	ipv_db_connect();
 
-	$type = mysql_real_escape_string ( $type );
+	$type = ipv_escape_string ( $type );
 
 	if ( $type == "botnet" ) $colname = "block_msg_botnet";
 	else if ( $type == "proxy" )  $colname = "block_msg_proxy";
@@ -450,8 +450,8 @@ function ipv_set_block_msg( $type, $msg ) {
 
 	ipv_db_connect();
 
-	$msg  = mysql_real_escape_string( $msg );
-	$type = mysql_real_escape_string( $type );
+	$msg  = ipv_escape_string( $msg );
+	$type = ipv_escape_string( $type );
 
 	if ( $type == "botnet" ) $colname = "block_msg_botnet";
 	else if ( $type == "proxy" )  $colname = "block_msg_proxy";
@@ -493,12 +493,12 @@ function ipv_set_blog_info(
 
 	ipv_db_connect();
 
-	$ipcc 	 	 = mysql_real_escape_string( $ipcc );
-	$stylesheet  = mysql_real_escape_string( $stylesheet );
-	$logo 		 = mysql_real_escape_string( $logo );
-	$name 	 	 = mysql_real_escape_string( $name );
-	$description = mysql_real_escape_string( $description );
-	$block_path  = mysql_real_escape_string( $block_path );
+	$ipcc 	 	 = ipv_escape_string( $ipcc );
+	$stylesheet  = ipv_escape_string( $stylesheet );
+	$logo 		 = ipv_escape_string( $logo );
+	$name 	 	 = ipv_escape_string( $name );
+	$description = ipv_escape_string( $description );
+	$block_path  = ipv_escape_string( $block_path );
 
 	$q_result = ipv_db_query(
 		' UPDATE ' . IPV_GLOBAL_SETTINGS . ' SET ' . 
@@ -666,7 +666,7 @@ function ipv_set_default_email( $admin_email ) {
 
     ipv_db_connect();
 
-	$admin_email = mysql_real_escape_string( $admin_email );
+	$admin_email = ipv_escape_string( $admin_email );
 
     $q_result = ipv_db_query( 'UPDATE ' . IPV_GLOBAL_SETTINGS .
         " SET notification_email='$admin_email' " .
@@ -843,9 +843,9 @@ function ipv_matches_excp( $action, $excp_type, $mask ) {
 	$mask = trim( $mask, '"' );
 	$mask = trim( $mask, "'" );
 
-	$excp_type 	= mysql_real_escape_string( $excp_type );
-	$mask 		= mysql_real_escape_string( $mask );
-	$action 	= mysql_real_escape_string( $action );
+	$excp_type 	= ipv_escape_string( $excp_type );
+	$mask 		= ipv_escape_string( $mask );
+	$action 	= ipv_escape_string( $action );
 
 	$q_str = 'SELECT action FROM ' . IPV_EXCEPTION . ' ' . 
 		"WHERE mask_type='exact' AND excp_type='$excp_type' " .
@@ -927,7 +927,7 @@ function ipv_get_category_tooltip( $id ) {
 
 	ipv_db_connect();
 
-	$id = mysql_real_escape_string( $id );
+	$id = ipv_escape_string( $id );
 
 	$q_str = 'SELECT text FROM '. IPV_TOOLTIP . ' ' .
 			 "WHERE id='$id' ";

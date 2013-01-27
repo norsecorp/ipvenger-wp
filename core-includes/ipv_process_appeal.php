@@ -72,8 +72,8 @@
 		ipv_db_connect();
 		
 		// use set_schema somewhere central
-		$ip 		= mysql_real_escape_string( $ip );
-		$email 		= mysql_real_escape_string( $email );
+		$ip 		= ipv_escape_string( $ip );
+		$email 		= ipv_escape_string( $email );
 		// exploit FIX
 		$request_id = intval( $request_id );
 

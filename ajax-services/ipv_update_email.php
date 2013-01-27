@@ -36,7 +36,7 @@
 	else $is_custom = "false";
 
 	$notification_address = 
-		mysql_real_escape_string( $_POST[ 'notification_address' ] );
+		ipv_escape_string( $_POST[ 'notification_address' ] );
 
 	if ( ! ipv_validate_email( $notification_address ) ) {
 		echo 'invalid email';

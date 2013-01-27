@@ -159,9 +159,9 @@ function ipv_validate(
 					// the complete list
 					$ar = $risk->xpath("//$name");
 
-					$name = mysql_real_escape_string( $name );
+					$name = ipv_escape_string( $name );
 					$values[$name] =
-						"'" . mysql_real_escape_string( array_pop($ar) ) . "'";
+						"'" . ipv_escape_string( array_pop($ar) ) . "'";
 
 					// and save the largest factor going toward the risk
 					$ar = $risk->xpath("//factoring/reason/$name");
@@ -199,13 +199,13 @@ function ipv_validate(
 				}
 
 				$primary_category_name = 
-					mysql_real_escape_string( $primary_category_name );
+					ipv_escape_string( $primary_category_name );
 
 				$primary_category_id = 
-					mysql_real_escape_string( $primary_category_id );
+					ipv_escape_string( $primary_category_id );
 
 				$primary_category_factor = 
-					mysql_real_escape_string( $primary_category_factor );
+					ipv_escape_string( $primary_category_factor );
 
 				// check blacklists first, then IPQ score
 

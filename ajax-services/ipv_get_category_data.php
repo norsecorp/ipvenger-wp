@@ -26,7 +26,7 @@
 	ipv_db_connect();
 
 	$q_days = intval( $_POST['n_days'] );
-	$country = mysql_real_escape_string( $_POST['country'] );
+	$country = ipv_escape_string( $_POST['country'] );
 
 	$max_categories = 4;
 

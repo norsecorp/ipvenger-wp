@@ -45,7 +45,7 @@ function ipv_insert_captcha( $image_data, $response ) {
 	
 	$count = ipv_get_captcha_cache_size();
 
-	$image_data = mysql_real_escape_string( $image_data );
+	$image_data = ipv_escape_string( $image_data );
 
 	$id = ( ipv_get_captcha_last() + 1 ) % $count;
 

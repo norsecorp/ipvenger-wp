@@ -97,7 +97,7 @@ function ipv_api_key_validate( $key ) {
 
     extract( ipv_db_fetch_assoc( $q_result ) );
 
-	$key = mysql_real_escape_string( $key );
+	$key = ipv_escape_string( $key );
 
     ipv_call_ipv_api( $ipv_server_url, $key, '4.2.2.2', $status );
 

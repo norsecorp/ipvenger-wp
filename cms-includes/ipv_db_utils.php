@@ -65,6 +65,17 @@ function ipv_db_connect() {
 
 }
 
+function ipv_escape_string( $string ) {
+
+    global $ipvdb;
+
+    if (!$ipvdb || !is_resource($ipvdb)) {
+        ipv_db_connect();
+    }
+
+    return mysql_real_escape_string($string, $ipvdb);
+}
+
 
 function ipv_db_cleanup() {
 

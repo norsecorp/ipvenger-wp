@@ -35,7 +35,7 @@
 		return;
 	}
 
-	$ip = mysql_real_escape_string( $_POST['ip'] );
+	$ip = ipv_escape_string( $_POST['ip'] );
 
     if ( isset( $_POST['max_recs'] ) ) {
         $max_recs = intval( $_POST['max_recs'] );

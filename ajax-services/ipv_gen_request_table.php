@@ -44,19 +44,19 @@
 
 	if ( isset( $_POST['start_date'] ) ) {
 		$start_date = $_POST['start_date'];
-		$start_date = mysql_real_escape_string( $start_date );
+		$start_date = ipv_escape_string( $start_date );
 		$filter_str .= ' AND ipv_int_date >= \''. $start_date . '\' ';
 	}
 
 	if ( isset( $_POST['end_date'] ) ) {
 		$end_date = $_POST['end_date'];
-		$end_date = mysql_real_escape_string( $end_date );
+		$end_date = ipv_escape_string( $end_date );
 		$filter_str .= ' AND ipv_int_date <= \'' . $end_date . '\' ';
 	}
 
 	if ( isset( $_POST['country_filter'] ) ) {
 		$country_filter = $_POST['country_filter'];
-		$country_filter = mysql_real_escape_string( $country_filter );
+		$country_filter = ipv_escape_string( $country_filter );
 		$filter_str .= ' AND country=\'' . $country_filter . '\' ';
 	}
 
@@ -66,13 +66,13 @@
 
 	if ( isset( $_POST['disp_filter'] ) ) {
 		$disp_filter = $_POST['disp_filter'];
-		$disp_filter = mysql_real_escape_string( $disp_filter );
+		$disp_filter = ipv_escape_string( $disp_filter );
 		$filter_str .= ' AND ipv_int_disp_reason=\'' . $disp_filter . '\' ';
 	}
 
 	if ( isset( $_POST['category_filter'] ) ) {
 		$category_filter = $_POST['category_filter'];
-		$category_filter = mysql_real_escape_string( $category_filter );
+		$category_filter = ipv_escape_string( $category_filter );
 		$filter_str .= <<<EOQ
 			AND ( 
 					ipv_int_factor_name='$category_filter'

@@ -51,7 +51,7 @@ EOQ;
 			"WHERE ipv_int_date > date_sub( curdate(), INTERVAL $days DAY ) ";
 	}
 
-	$q_date_limit = mysql_real_escape_string( $date_limit );
+	$q_date_limit = ipv_escape_string( $date_limit );
 
 	$q_str = ' SELECT * FROM ' . IPV_REQUEST_DETAIL . " $q_date_limit ";
 
