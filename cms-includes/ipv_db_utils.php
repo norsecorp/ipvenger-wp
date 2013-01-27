@@ -3,24 +3,24 @@
 /*
  * *********  Wordpress Version **********
  *
- * database connection and cleanup functions 
- * 
+ * database connection and cleanup functions
+ *
  * It would be preferable to wrap the wordpress database (wpdb) library,
- * but to include these libraries without loading all of wordpress 
- * requires an excessive number of workarounds.  For this reason this 
+ * but to include these libraries without loading all of wordpress
+ * requires an excessive number of workarounds.  For this reason this
  * is just a wrapper of the ordinary mysql_ library.
- * 
- * If at some point WP provides a clean separation of db API from presentation 
- * loop this should be revisited.  
- * 
+ *
+ * If at some point WP provides a clean separation of db API from presentation
+ * loop this should be revisited.
+ *
 */
 
 require_once( dirname( __FILE__ ) . '/../../../../wp-config.php' );
 
-// support wordpress table prefixing by computing "real" table names 	
+// support wordpress table prefixing by computing "real" table names
 // be sure any changes here are carried down into ipv_db_count_tables
 
-global $table_prefix;
+global $table_prefix, $ipvdb;
 
 // these tables contain user data which must be migrated release to release
 
@@ -40,13 +40,31 @@ define( 'IPV_CAPTCHA_CACHE', 	$table_prefix . 'ipv_captcha_cache' );
 
 function ipv_db_connect() {
 
-	global $table_prefix;
+	global $table_prefix, $ipvdb;
 
-	// we already have the connection info defined in wp-config
-	mysql_connect( DB_HOST, DB_USER, DB_PASSWORD );
-	mysql_select_db( DB_NAME );
+	if (!$ipvdb || !is_resource($ipvdb) || !mysql_ping($ipvdb)) {
+
+	    $ipvdb = NULL;
+
+	    // we already have the connection info defined in wp-config
+	    if ( WP_DEBUG ) {
+	        $ipvdb = mysql_connect( DB_HOST, DB_USER, DB_PASSWORD, defined( 'MYSQL_NEW_LINK' ) ? MYSQL_NEW_LINK : true, defined( 'MYSQL_CLIENT_FLAGS' ) ? MYSQL_CLIENT_FLAGS : 0 );
+	    } else {
+	        $ipvdb = @mysql_connect( DB_HOST, DB_USER, DB_PASSWORD, defined( 'MYSQL_NEW_LINK' ) ? MYSQL_NEW_LINK : true, defined( 'MYSQL_CLIENT_FLAGS' ) ? MYSQL_CLIENT_FLAGS : 0 );
+	    }
+
+	    if ( function_exists( 'mysql_set_charset' ) ) {
+	        mysql_set_charset( defined( 'DB_CHARSET' ) ? DB_CHARSET : 'utf8', $ipvdb );
+	    } else {
+	        ipv_db_query(sprintf('SET NAMES %s COLLATE %s', defined( 'DB_CHARSET' ) ? DB_CHARSET : 'utf8', defined( 'DB_COLLATE' ) ? DB_COLLATE : 'utf8_general_ci'));
+	        ipv_db_query(sprintf('SET CHARACTER SET %s', defined( 'DB_CHARSET' ) ? DB_CHARSET : 'utf8'));
+	    }
+	}
+
+	mysql_select_db( DB_NAME, $ipvdb );
 
 }
+
 
 function ipv_db_cleanup() {
 
@@ -56,31 +74,35 @@ function ipv_db_cleanup() {
 
 function ipv_db_query( $query ) {
 
-	return mysql_query( $query );
+    global $ipvdb;
+
+	return mysql_query( $query , $ipvdb );
 
 }
 
 function ipv_insert_id() {
 
-	return mysql_insert_id();
+    global $ipvdb;
+
+    return mysql_insert_id( $ipvdb );
 
 }
 
-function ipv_db_num_rows( $query ) {
+function ipv_db_num_rows( $result ) {
 
-	return mysql_num_rows( $query );
-
-}
-
-function ipv_db_fetch_assoc( $query ) {
-
-	return mysql_fetch_assoc( $query );
+    return mysql_num_rows( $result );
 
 }
 
-function ipv_db_fetch_row( $query ) {
+function ipv_db_fetch_assoc( $result ) {
 
-	return mysql_fetch_row( $query );
+    return mysql_fetch_assoc( $result );
+
+}
+
+function ipv_db_fetch_row( $result ) {
+
+    return mysql_fetch_row( $result );
 
 }
 
@@ -95,9 +117,9 @@ function ipv_db_count_tables() {
 	$pfx = $wpdb->base_prefix;
 
 	$count = $wpdb->query(
-		'SELECT table_name FROM INFORMATION_SCHEMA.TABLES ' . 
+		'SELECT table_name FROM INFORMATION_SCHEMA.TABLES ' .
  		'WHERE table_schema = \'' . DB_NAME . '\' AND ' .
- 		'table_name LIKE \'' . $pfx . 'ipv_%\'' 
+ 		'table_name LIKE \'' . $pfx . 'ipv_%\''
 
 	);
 
@@ -106,11 +128,11 @@ function ipv_db_count_tables() {
 
 }
 
-/** 
+/**
  *  Called by nightly cleanup to delete request detail records over 30 days
  *  old and appeal records over 48 hours old
 */
- 
+
 function ipv_db_purge_expired() {
 
 	global $wpdb;
@@ -118,13 +140,13 @@ function ipv_db_purge_expired() {
 	// purge request details more than 30 days old
 	$wpdb->query(
 		'DELETE FROM ' . IPV_REQUEST_DETAIL .
-		' WHERE ipv_int_date < DATE_SUB(CURDATE(), INTERVAL 30 DAY)' 
+		' WHERE ipv_int_date < DATE_SUB(CURDATE(), INTERVAL 30 DAY)'
 	);
 
 	// purge appeal requests more than 48 hours old
 	$wpdb->query(
 		'DELETE FROM ' . IPV_APPEAL .
-		' WHERE timestamp < (NOW() - INTERVAL 48 HOUR)' 
+		' WHERE timestamp < (NOW() - INTERVAL 48 HOUR)'
 	);
 
 }
@@ -133,7 +155,7 @@ function ipv_db_drop_tables() {
 
 	global $wpdb;
 
-	$query = 'DROP TABLE ' . 
+	$query = 'DROP TABLE ' .
 			IPV_EXCEPTION . ', ' .
 			IPV_GLOBAL_SETTINGS . ', ' .
 			IPV_REQUEST_DETAIL . ', ' .
@@ -142,14 +164,14 @@ function ipv_db_drop_tables() {
 	$wpdb->query( $query );
 
 	ipv_db_drop_static_tables();
-		
+
 }
 
 function ipv_db_create_tables() {
 
 	global $wpdb;
 
-	// redefine constants as variables for convenience in heredocs 
+	// redefine constants as variables for convenience in heredocs
 
 	$ipv_exception_name 		= IPV_EXCEPTION;
 	$ipv_global_settings_name 	= IPV_GLOBAL_SETTINGS;
@@ -160,21 +182,21 @@ function ipv_db_create_tables() {
 
 	$query = <<<EOQ
 	# these are the exceptions (initially, actions are either allow (whitelist)
-	# or deny (blacklist).  We have separate subcategories for exact match and 
+	# or deny (blacklist).  We have separate subcategories for exact match and
 	# for wildcard, since wildcard elements must be processed individually while
-	# exact matches can be searched using SQL LIKE.  we expect the number of 
+	# exact matches can be searched using SQL LIKE.  we expect the number of
 	# exceptions to be small enough to put all in one table
 
 	# mask and type together constitute a unique rule i.e. we enforce that for
 	# a given field (for example) we cannot have both a whitelist and blacklist
 	# defined by the same mask
 
-	create table $ipv_exception_name ( 
+	create table $ipv_exception_name (
 		id int key not null auto_increment,
 		action enum( 'allow', 'deny' ),
 		mask varchar(200) not null,
 		mask_type enum( 'exact', 'wildcard', 'ip_range' ),
-		excp_type varchar(55), 
+		excp_type varchar(55),
 		unique key ( mask, excp_type )
 	);
 EOQ;
@@ -184,11 +206,11 @@ EOQ;
 	}
 
 	$query = <<<EOQ
-	# user appeals 
+	# user appeals
 
-	create table $ipv_appeal_name ( 
+	create table $ipv_appeal_name (
 		appeal_id 	int key not null auto_increment,
-		timestamp 	timestamp,	
+		timestamp 	timestamp,
 		ip 			varchar(16),
 		request_id 	bigint,
 		email	  	varchar(128)
@@ -233,26 +255,26 @@ EOQ;
 	}
 
 	$query = <<<EOQ
-	insert into $ipv_global_settings_name values ( 
-		null, 
-		72, 
+	insert into $ipv_global_settings_name values (
+		null,
+		72,
 		false,
 		'default',
 		'',
-		false, 
-		'never', 	
-		NULL, 
+		false,
+		'never',
+		NULL,
 		true,
 		NULL,
-		false,	
+		false,
 		NULL,
 		NULL,
 		NULL,
 		NULL,
 		NULL,
 		NULL,
-		30, 
-		'http://us.api.ipviking.com/api/', 
+		30,
+		'http://us.api.ipviking.com/api/',
 		'<h1>Forbidden</h1><p>Your access to this website has been blocked because your IP address has been identified as a potential threat.  If you believe that this is an error, and wish to be allowed access, please contact the site administrator.</p>',
 		'<h1>Forbidden</h1><p>Your access to this website has been blocked because you are accessing the Internet through a Proxy that has been identified as a potential threat.  If you believe that this is an error, and wish to be allowed access, please contact the site administrator.</p>',
 		'<h1>Forbidden</h1><p>Your access to this website has been blocked because the computer you are using appears to have been hijacked by malicious software.  Please update your antivirus and antimalware software and contact the site administrator to request access if the problem persists.</p>',
@@ -265,7 +287,7 @@ EOQ;
 	}
 
 	$query = <<<EOQ
-	# detail reporting table - raw dump of all IPV risk data. IMPORTANT - 
+	# detail reporting table - raw dump of all IPV risk data. IMPORTANT -
 	# any "internal use" records should start ipv_int as the other columns
 	# are automatically extracted as keywords for parsing the response xml
 	create table $ipv_request_detail_name (
@@ -316,7 +338,7 @@ EOQ;
 	}
 
 	/* create time index to support fast IP cacheing direct from this table */
-	$query = 
+	$query =
 		"create index time_index on $ipv_request_detail_name ( ipv_int_time )";
 
 	if ( $wpdb->query( $query ) === FALSE ) {
@@ -367,7 +389,7 @@ function ipv_db_create_static_tables() {
 
 	$query = <<<EOQ
 
-	create table $ipv_cache_name ( 
+	create table $ipv_cache_name (
 		ipv_cache_invalid_time timestamp,
 		ipv_captcha_count int,
 		ipv_captcha_last int,
@@ -386,7 +408,7 @@ EOQ;
 
 	$query = <<<EOQ
 
-	create table $ipv_captcha_cache_name ( 
+	create table $ipv_captcha_cache_name (
 		id			int,
 		captcha		blob,
 		response	varchar(32)
@@ -398,7 +420,7 @@ EOQ;
 	}
 
 	$query = <<<EOQ
-	create table $ipv_captcha_served_name ( 
+	create table $ipv_captcha_served_name (
 		ip		varchar(16) key,
 		id		int
 	);
@@ -410,8 +432,8 @@ EOQ;
 
 	$query = <<<EOQ
 
-	create table $ipv_site_type_name ( 
-		type_short_name varchar(32), 
+	create table $ipv_site_type_name (
+		type_short_name varchar(32),
 		type_display_name varchar(64),
 		ipq_level float,
 		ipq_level_desc varchar(32),
@@ -424,29 +446,29 @@ EOQ;
 	}
 
 	$query = <<<EOQ
-	insert into $ipv_site_type_name values 
-		( 'default', 'Default Site', 42, 'medium-high', 
-		  "You will block traffic that is shown to have <ul> <li> significant risk characteristics seen in past 24 hours</li> <li> significant prior risky characteristics seen</li> <li> significant IP address irregularities seen</li> </ul>" 
-		), 
-		( 'custom', 'Custom Site', 50, 'custom', ""
-		), 
-		( 'ecommerce', 'eCommerce Store', 33, 'high', 
-		  "You will block traffic that is shown to have <ul> <li> some risky characteristics seen in past 24 hours</li> <li> some prior risky characteristics seen</li> <li> some IP address irregularities seen</li> </ul>" 
-		), 
-		( 'social', 'Social Platform', 52, 'medium', 
-		  "You will block traffic that is shown to have <ul> <li> extreme risk indicated due to risk category activities seen in past 24 hours</li> <li> extreme prior risk category activities seen</li> <li> extreme IP address risk behavior seen</li> </ul>" 
-		), 
-		( 'corporate', 'Corporate Site', 50, 'medium',  
-		  "You will block traffic that is shown to have <ul> <li> extreme risk indicated due to risk category activities seen in past 24 hours</li> <li> extreme prior risk category activities seen</li> <li> extreme IP address risk behavior seen</li> </ul>" 
+	insert into $ipv_site_type_name values
+		( 'default', 'Default Site', 42, 'medium-high',
+		  "You will block traffic that is shown to have <ul> <li> significant risk characteristics seen in past 24 hours</li> <li> significant prior risky characteristics seen</li> <li> significant IP address irregularities seen</li> </ul>"
 		),
-		( 'webapp', 'Web Application', 40, 'medium-high', 
-		  "You will block traffic that is shown to have <ul> <li> significant risk characteristics seen in past 24 hours</li> <li> significant prior risky characteristics seen</li> <li> significant IP address irregularities seen</li> </ul>" 
-		), 
-		( 'blog', 'Blog', 48, 'medium', 
-		  "You will block traffic that is shown to have <ul> <li> extreme risk indicated due to risk category activities seen in past 24 hours</li> <li> extreme prior risk category activities seen</li> <li> extreme IP address risk behavior seen</li> </ul>" 
-		), 
-		( 'marketing', 'Marketing Site', 54, 'medium', 
-		  "You will block traffic that is shown to have <ul> <li> extreme risk indicated due to risk category activities seen in past 24 hours</li> <li> extreme prior risk category activities seen</li> <li> extreme IP address risk behavior seen</li> </ul>" 
+		( 'custom', 'Custom Site', 50, 'custom', ""
+		),
+		( 'ecommerce', 'eCommerce Store', 33, 'high',
+		  "You will block traffic that is shown to have <ul> <li> some risky characteristics seen in past 24 hours</li> <li> some prior risky characteristics seen</li> <li> some IP address irregularities seen</li> </ul>"
+		),
+		( 'social', 'Social Platform', 52, 'medium',
+		  "You will block traffic that is shown to have <ul> <li> extreme risk indicated due to risk category activities seen in past 24 hours</li> <li> extreme prior risk category activities seen</li> <li> extreme IP address risk behavior seen</li> </ul>"
+		),
+		( 'corporate', 'Corporate Site', 50, 'medium',
+		  "You will block traffic that is shown to have <ul> <li> extreme risk indicated due to risk category activities seen in past 24 hours</li> <li> extreme prior risk category activities seen</li> <li> extreme IP address risk behavior seen</li> </ul>"
+		),
+		( 'webapp', 'Web Application', 40, 'medium-high',
+		  "You will block traffic that is shown to have <ul> <li> significant risk characteristics seen in past 24 hours</li> <li> significant prior risky characteristics seen</li> <li> significant IP address irregularities seen</li> </ul>"
+		),
+		( 'blog', 'Blog', 48, 'medium',
+		  "You will block traffic that is shown to have <ul> <li> extreme risk indicated due to risk category activities seen in past 24 hours</li> <li> extreme prior risk category activities seen</li> <li> extreme IP address risk behavior seen</li> </ul>"
+		),
+		( 'marketing', 'Marketing Site', 54, 'medium',
+		  "You will block traffic that is shown to have <ul> <li> extreme risk indicated due to risk category activities seen in past 24 hours</li> <li> extreme prior risk category activities seen</li> <li> extreme IP address risk behavior seen</li> </ul>"
 		)
 EOQ;
 
@@ -467,7 +489,7 @@ EOQ;
 	}
 
 	$query = <<<EOQ
-	insert into $ipv_tooltip_name values 
+	insert into $ipv_tooltip_name values
 		( 'Country Risk Factor', 'Relative risk factor associated with the country of record for this IP' ),
 		( 'Region Risk Factor', 'Relative risk factor associated with the region from which this IP originates.' ),
 		( 'IP Resolve Factor', 'Relative risk factor associated with the domain name and other “reverse lookup” information associated with this IP, both current and historical' ),
