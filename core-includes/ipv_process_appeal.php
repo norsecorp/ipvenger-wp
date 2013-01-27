@@ -19,8 +19,6 @@
 
 	if ( ! isset(
 		$_POST['captcha_response'],
-		$_POST['ip'],
-		$_POST['request_id'],
 		$_POST['email'] ) )
 	{
 		die( 'Unauthorized' );
@@ -34,7 +32,7 @@
 // 	if(isset($_SERVER['HTTP_X_FORWARDED_FOR']))
 // 		$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
 
-	$request_id 		= $_POST['request_id'];
+	$request_id 		= $_SESSION['ipv_request_id'];
 	$email 				= $_POST['email'];
 
 	/* validate email format and DNS domain record */
@@ -74,7 +72,7 @@
 		// use set_schema somewhere central
 		$ip 		= ipv_escape_string( $ip );
 		$email 		= ipv_escape_string( $email );
-		// exploit FIX
+
 		$request_id = intval( $request_id );
 
 		// escape $request_id with quotes
@@ -86,10 +84,15 @@
 
 		$q_result = ipv_db_query( $q_str );
 
-		// BAD WTF santa clause exploit
-		echo <<<EOR
-<meta http-equiv="Refresh" content="2; url=${_POST['return_to']}">
-EOR;
+		$return = html_entity_decode(''.$_POST['return_to']);
+		if (preg_match("/^(?:(?:\w+:)(\/\/))/", $return)) {
+		    $return = parse_url($return, PHP_URL_PATH); // this is still probably not the most secure - jb
+		} else {
+		    $return = preg_replace("/(?:\?|%3F).*$/u", '', $return);
+		}
+		$return = ltrim('/'. rawurlencode($return), '/');
+
+		echo '<meta http-equiv="Refresh" content="2; url=' . $return . '">';
 
 		if ( ( $q_result ) && ( ipv_db_num_rows( $q_result ) > 0 ) ) {
 			echo 'Your appeal is on file for review by the site administrator.';
