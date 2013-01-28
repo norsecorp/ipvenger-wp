@@ -290,9 +290,9 @@ EOQ;
 		NULL,
 		30,
 		'http://us.api.ipviking.com/api/',
-		'<h1>Forbidden</h1><p>Your access to this website has been blocked because your IP address has been identified as a potential threat.  If you believe that this is an error, and wish to be allowed access, please contact the site administrator.</p>',
-		'<h1>Forbidden</h1><p>Your access to this website has been blocked because you are accessing the Internet through a Proxy that has been identified as a potential threat.  If you believe that this is an error, and wish to be allowed access, please contact the site administrator.</p>',
-		'<h1>Forbidden</h1><p>Your access to this website has been blocked because the computer you are using appears to have been hijacked by malicious software.  Please update your antivirus and antimalware software and contact the site administrator to request access if the problem persists.</p>',
+		'<h1>Forbidden</h1><p>Your access to this website has been blocked because your computer or the network from which you are connecting has been assessed as high risk and a potential security threat. If you believe this to be an error, please use the form below to request temporary site access.</p>',
+		'<h1>Forbidden</h1><p>Your access to this website has been blocked because you are accessing the Internet through an anonymizing proxy that has been identified as a high risk and a potential security threat. If you believe this to be an error, please use the form below to request temporary site access.</p>',
+		'<h1>Forbidden</h1><p>Your access to this website has been blocked because we have detected high risk and potentially malicious network traffic originating from your computer or the network from which you are connecting.If you believe this to be an error, please use the form below to verify your identity and request temporary site access.</p>',
 		TRUE
 		);
 EOQ;
