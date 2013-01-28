@@ -87,7 +87,11 @@ function ipv_db_query( $query ) {
 
     global $ipvdb;
 
-	return mysql_query( $query , $ipvdb );
+    if (!$ipvdb || !is_resource($ipvdb)) {
+        ipv_db_connect();
+    }
+
+    return mysql_query( $query , $ipvdb );
 
 }
 
@@ -432,8 +436,9 @@ EOQ;
 
 	$query = <<<EOQ
 	create table $ipv_captcha_served_name (
-		ip		varchar(16) key,
-		id		int
+		ip		varchar(16),
+		id		int,
+	    primary key (ip)
 	);
 EOQ;
 
