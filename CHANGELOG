@@ -1,3 +1,141 @@
+commit f917042785f24f635483f7c46d1b8fe411a3c0bd
+Author: jbelich <jbelich@mannerheim>
+Date:   Fri Feb 1 14:17:55 2013 -0800
+
+    bump version for release
+
+commit 1b6a2c2331af10c84fed7a05d62483d18101c59a
+Author: jbelich <jbelich@mannerheim>
+Date:   Sun Jan 27 19:48:35 2013 -0800
+
+    new block messages
+
+commit a2a2265ed780a600504a154920e83a05a872a51a
+Author: jbelich <jbelich@mannerheim>
+Date:   Sun Jan 27 17:20:23 2013 -0800
+
+    table key tweak, and graceful recovery of db connection in query
+
+commit d086fac5be11c443f45554f75c5e7e0144329dca
+Author: jbelich <jbelich@mannerheim>
+Date:   Sun Jan 27 15:11:44 2013 -0800
+
+    try to chmod config file if not writable.
+
+commit 3609875295a32b1c7aa4e1998b38dee8e79a552f
+Author: jbelich <jbelich@mannerheim>
+Date:   Sun Jan 27 14:06:19 2013 -0800
+
+    some POST filtering
+
+commit d0109eeb7d580a98b92e98e6081e57e069d4212d
+Author: jbelich <jbelich@mannerheim>
+Date:   Sun Jan 27 13:22:46 2013 -0800
+
+    use remote addr instead of _get var
+
+commit a440bc8a6831629f722d6cb001f38af1025a5a31
+Author: jbelich <jbelich@mannerheim>
+Date:   Sun Jan 27 13:22:13 2013 -0800
+
+    apply filter to _POST['return_to']. use _SESSION['ipv_request_id']
+    instead of _POST['request_id']
+
+commit 535708682c23e2166d1e7825a790b30d1a477ceb
+Author: jbelich <jbelich@mannerheim>
+Date:   Sun Jan 27 00:03:24 2013 -0800
+
+    replace email validator with norse standard validator
+
+commit d6eb9458da6bb890185e61dfaa6f0627ff501494
+Author: jbelich <jbelich@mannerheim>
+Date:   Sat Jan 26 23:53:12 2013 -0800
+
+    temp commenting out of x-forwarded-for
+
+commit 14a8399a2448302e94836602514284c08c3cee11
+Author: jbelich <jbelich@mannerheim>
+Date:   Sat Jan 26 22:22:11 2013 -0800
+
+    add shorter fsockopen timeout, also some debug fun
+
+commit a0f203a5138b7f5effd6cda5a7a4b639c7cfbd3e
+Author: jbelich <jbelich@mannerheim>
+Date:   Sat Jan 26 21:29:21 2013 -0800
+
+    centralize mysql_real_escape_string into ipv_escape_string
+
+commit 91bb69821896129b21b7e6dca368424e9b5af5fa
+Author: jbelich <jbelich@mannerheim>
+Date:   Sat Jan 26 21:25:03 2013 -0800
+
+    explicit set charset for charset exploit, store resource link
+
+commit 2334a3360bd0768e98b8c10b2123023062ca1642
+Author: tomsti <ts@norse-corp.com>
+Date:   Fri Jan 25 18:23:08 2013 -0800
+
+    Fixed missing stuff
+
+commit 53fa1de150333f26bdaf63125a4d9c5241361f9f
+Author: tomsti <ts@norse-corp.com>
+Date:   Fri Jan 25 17:46:01 2013 -0800
+
+    commented exploit that needs fixing
+
+commit 3ae43d78dfa12044d0f5d37426eb4a39acab959d
+Author: tomsti <ts@norse-corp.com>
+Date:   Fri Jan 25 17:45:45 2013 -0800
+
+    commented exploit that needs fixing
+
+commit d44392df27afe0fd3365a0de0c7a658aa738512b
+Author: tomsti <ts@norse-corp.com>
+Date:   Thu Jan 24 23:14:00 2013 -0800
+
+    alot of SHIT
+
+commit c67ba85d5db736044cb2d65bd5d0e3933da5a995
+Author: tomsti <ts@norse-corp.com>
+Date:   Thu Jan 24 23:01:12 2013 -0800
+
+    exploits comments added
+
+commit 4f4053755f31bad741bd329d85b4d61f765f1667
+Author: tomsti <ts@norse-corp.com>
+Date:   Thu Jan 24 22:59:43 2013 -0800
+
+    Fixed misc erros exploits added comments
+
+commit 55a1cf0be6b9a70938e364ee5247c596e23650d3
+Author: tomsti <ts@norse-corp.com>
+Date:   Thu Jan 24 22:25:49 2013 -0800
+
+    Comments
+
+commit 9bfd16df24ebac821e022a0a7e5079f79d5bcb04
+Author: tomsti <ts@norse-corp.com>
+Date:   Thu Jan 24 22:22:31 2013 -0800
+
+    Added PHP_OS comments
+
+commit 95da8d6c29426495d7cda9e8215b5abf557c429e
+Author: tomsti <ts@norse-corp.com>
+Date:   Thu Jan 24 18:21:23 2013 -0800
+
+    Changed clientID to customID for SERVER_NAME
+
+commit 9aba5d4d89d98771e7400a33ba935904e4412974
+Author: Jason Belich <jbelich@mannerheim.(none)>
+Date:   Thu Jan 24 16:18:01 2013 -0800
+
+    initial commit
+
+commit f09ce06ad78bca886ef1b420cafae99ef4e418ac
+Author: Jason Belich <jason@belich.com>
+Date:   Thu Jan 24 16:16:14 2013 -0800
+
+    Initial commit
 commit c28cdd36609ac25520c655e59b9e224b0ae8cfd8
 Author: sburkett <steven.burkett@sprydigital.com>
 Date:   Wed Jan 9 16:17:03 2013 -0600
