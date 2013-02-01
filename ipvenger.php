@@ -3,13 +3,13 @@
 Plugin Name: IPVenger
 Plugin URI: http://ipvenger.com/
 Description: IPVenger website security - configuration and reporting
-Version: 1.0-rc-010916
+Version: 1.0.0
 Author: NorseCorp
 Author URI: http://ipvenger.com/
 License: GPLv2
 */
 
-/* 
+/*
 Copyright 2012 NorseCorp
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -89,7 +89,7 @@ function ipv_activate() {
 	$description 	= get_bloginfo( 'description' );
 	$block_path	    = plugins_url( '' , __FILE__ );
 
-	ipv_set_blog_info( 
+	ipv_set_blog_info(
 		$ipcc_url, $stylesheet_uri, $logo_uri, $name, $description, $block_path
 	);
 
@@ -102,7 +102,7 @@ function ipv_activate() {
 	ipv_activate_wp_config();
 
 	// schedule nightly database cleanup
-	wp_schedule_event( 
+	wp_schedule_event(
 		current_time( 'timestamp' ), 'daily', 'ipv_cleanup_db' );
 
 	// set the database flag
@@ -113,7 +113,7 @@ function ipv_activate() {
 register_deactivation_hook( __FILE__, 'ipv_deactivate' );
 
 function ipv_deactivate() {
-	
+
 	ipv_deactivate_wp_config();
 
 	// set the database flag
@@ -133,136 +133,136 @@ function ipv_session_info() {
 
 		if ( function_exists( 'openssl_random_pseudo_bytes' ) )
 			$auth_token = bin2hex( openssl_random_pseudo_bytes(128) );
-		else 
+		else
 			$auth_token = sha1( uniqid( mt_rand() ) );
 
 		$_SESSION['ipv_auth_token'] = $auth_token;
 
 	}
 
-	wp_register_script( 
-		'ipv-handle-timeout-script', 
-		$GLOBALS['ipv_dashboard_home'] . '/ipv_handle_timeout.js', 
+	wp_register_script(
+		'ipv-handle-timeout-script',
+		$GLOBALS['ipv_dashboard_home'] . '/ipv_handle_timeout.js',
 		false, '1.0', false
 	);
 
-	wp_register_script( 
-		'ipv-cluetip-script', 
-		$GLOBALS['ipv_jquery_home'] . '/jquery.cluetip.js', 
+	wp_register_script(
+		'ipv-cluetip-script',
+		$GLOBALS['ipv_jquery_home'] . '/jquery.cluetip.js',
 		false, '1.0', false
 	);
 
-	wp_register_script( 
-		'ipv-blockui-script', 
-		$GLOBALS['ipv_jquery_home'] . '/jquery.blockUI.js', 
+	wp_register_script(
+		'ipv-blockui-script',
+		$GLOBALS['ipv_jquery_home'] . '/jquery.blockUI.js',
 		false, '1.0', false
 	);
 
-	wp_register_script( 
-		'ipv-combobox-script', 
-		$GLOBALS['ipv_jquery_home'] . '/jquery.combobox.js', 
+	wp_register_script(
+		'ipv-combobox-script',
+		$GLOBALS['ipv_jquery_home'] . '/jquery.combobox.js',
 		array( 'jquery-ui-widget' ), '1.0', false
 	);
 
-	wp_register_script( 
-		'ipv-flot-script', 
-		$GLOBALS['ipv_jquery_home'] . '/jquery.flot.js', 
+	wp_register_script(
+		'ipv-flot-script',
+		$GLOBALS['ipv_jquery_home'] . '/jquery.flot.js',
 		false, '1.0', false
 	);
 
-	wp_register_script( 
-		'ipv-flotpie-script', 
-		$GLOBALS['ipv_jquery_home'] . '/jquery.flot.pie.js', 
+	wp_register_script(
+		'ipv-flotpie-script',
+		$GLOBALS['ipv_jquery_home'] . '/jquery.flot.pie.js',
 		false, '1.0', false
 	);
 
-	wp_register_script( 
-		'ipv-flotorderbars-script', 
-		$GLOBALS['ipv_jquery_home'] . '/jquery.flot.orderBars.js', 
+	wp_register_script(
+		'ipv-flotorderbars-script',
+		$GLOBALS['ipv_jquery_home'] . '/jquery.flot.orderBars.js',
 		false, '1.0', false
 	);
 
-	wp_register_script( 
-		'ipv-flotstack-script', 
-		$GLOBALS['ipv_jquery_home'] . '/jquery.flot.stack.js', 
+	wp_register_script(
+		'ipv-flotstack-script',
+		$GLOBALS['ipv_jquery_home'] . '/jquery.flot.stack.js',
 		false, '1.0', false
 	);
 
-	wp_register_script( 
-		'ipv-tablesorter-script', 
-		$GLOBALS['ipv_jquery_home'] . '/jquery.tablesorter.min.js', 
+	wp_register_script(
+		'ipv-tablesorter-script',
+		$GLOBALS['ipv_jquery_home'] . '/jquery.tablesorter.min.js',
 		false, '1.0', false
 	);
 
-	wp_register_script( 
-		'ipv-tablesorterwidgets-script', 
-		$GLOBALS['ipv_jquery_home'] . '/jquery.tablesorter.widgets.min.js', 
+	wp_register_script(
+		'ipv-tablesorterwidgets-script',
+		$GLOBALS['ipv_jquery_home'] . '/jquery.tablesorter.widgets.min.js',
 		false, '1.0', false
 	);
 
-	wp_register_script( 
-		'ipv-fixedheader-script', 
-		$GLOBALS['ipv_jquery_home'] . '/jquery.fixedHeader.js', 
+	wp_register_script(
+		'ipv-fixedheader-script',
+		$GLOBALS['ipv_jquery_home'] . '/jquery.fixedHeader.js',
 		false, '1.0', false
 	);
 
-	wp_register_script( 
-		'ipv-jvectormap-script', 
-		$GLOBALS['ipv_jquery_home'] . '/jquery-jvectormap-1.0.min.js', 
+	wp_register_script(
+		'ipv-jvectormap-script',
+		$GLOBALS['ipv_jquery_home'] . '/jquery-jvectormap-1.0.min.js',
 		false, '1.0', false
 	);
 
-	wp_register_script( 
-		'ipv-jvectormapworldenu-script', 
-		$GLOBALS['ipv_jquery_home'] . '/jquery-jvectormap-world-en.js', 
+	wp_register_script(
+		'ipv-jvectormapworldenu-script',
+		$GLOBALS['ipv_jquery_home'] . '/jquery-jvectormap-world-en.js',
 		false, '1.0', false
 	);
 
-	wp_register_script( 
-		'ipv-excanvas', 
-		$GLOBALS['ipv_jquery_home'] . '/excanvas.compiled.js', 
+	wp_register_script(
+		'ipv-excanvas',
+		$GLOBALS['ipv_jquery_home'] . '/excanvas.compiled.js',
 		false, '1.0', false
 	);
 
-	wp_register_script( 
-		'ipv-countrycodes-script', 
-		$GLOBALS['ipv_jquery_home'] . '/country_codes.js', 
+	wp_register_script(
+		'ipv-countrycodes-script',
+		$GLOBALS['ipv_jquery_home'] . '/country_codes.js',
 		false, '1.0', false
 	);
 
-	wp_register_script( 
-		'ipv-ipbwlist-script', 
-		$GLOBALS['ipv_dashboard_home'] . '/ipv_ip_bw_list.js', 
+	wp_register_script(
+		'ipv-ipbwlist-script',
+		$GLOBALS['ipv_dashboard_home'] . '/ipv_ip_bw_list.js',
 		false, '1.0', false
 	);
 
-	wp_register_style( 
+	wp_register_style(
 		'ipv-style', $GLOBALS['ipv_css_home'] . '/style.css',
-		false, '1.0', 'all' 
+		false, '1.0', 'all'
 	);
 
-	wp_register_style( 
-		'ipv-jqueryui-style', 
+	wp_register_style(
+		'ipv-jqueryui-style',
 		$GLOBALS['ipv_jquery_home'] . '/jquery-ui-1.8.19.custom.css',
-		false, '1.0', 'all' 
+		false, '1.0', 'all'
 	);
 
-	wp_register_style( 
-		'ipv-cluetip-style', 
+	wp_register_style(
+		'ipv-cluetip-style',
 		$GLOBALS['ipv_jquery_home'] . '/jquery.cluetip.css',
-		false, '1.0', 'all' 
+		false, '1.0', 'all'
 	);
 
-	wp_register_style( 
-		'ipv-jvectormap-style', 
+	wp_register_style(
+		'ipv-jvectormap-style',
 		$GLOBALS['ipv_jquery_home'] . '/jquery-jvectormap-1.0.css',
-		false, '1.0', 'all' 
+		false, '1.0', 'all'
 	);
 
-	wp_register_style( 
-		'ipv-combobox-style', 
+	wp_register_style(
+		'ipv-combobox-style',
 		$GLOBALS['ipv_jquery_home'] . '/jquery.combobox.css',
-		false, '1.0', 'all' 
+		false, '1.0', 'all'
 	);
 
 }
@@ -280,11 +280,11 @@ function ipv_enqueue_scripts( $hook ) {
 	wp_enqueue_script( 'ipv-cluetip-script' );
 
 	switch( $hook ) {
-		case 'toplevel_page_ipvenger/ipvenger': 
+		case 'toplevel_page_ipvenger/ipvenger':
 			wp_enqueue_script( 'ipv-blockui-script' );
 			break;
 
-		case 'ipvenger_page_ipvenger/ipvenger__analytics': 
+		case 'ipvenger_page_ipvenger/ipvenger__analytics':
 
 			if ( $is_IE ) {
 				if ( ! function_exists( 'wp_check_browser_version' ) )
@@ -292,7 +292,7 @@ function ipv_enqueue_scripts( $hook ) {
 
 				if (version_compare( intval($response['version']) , 9 ) < 0)
 					 wp_enqueue_script( 'ipv-excanvas' );
-			}	
+			}
 
 			wp_enqueue_script( 'jquery-ui-widget' );
 			wp_enqueue_script( 'jquery-ui-core' );
@@ -313,14 +313,14 @@ function ipv_enqueue_scripts( $hook ) {
 
 			break;
 
-		case 'ipvenger_page_ipvenger/ipvenger__ipcc': 
+		case 'ipvenger_page_ipvenger/ipvenger__ipcc':
 			wp_enqueue_script( 'jquery-ui-core' );
 			wp_enqueue_script( 'jquery-ui-datepicker' );
 			wp_enqueue_script( 'jquery-ui-dialog' );
 			wp_enqueue_script( 'ipv-ipbwlist-script' );
 			break;
 
-		case 'ipvenger_page_ipvenger/ipvenger__adv_settings': 
+		case 'ipvenger_page_ipvenger/ipvenger__adv_settings':
 			wp_enqueue_script( 'jquery-ui-core' );
 			wp_enqueue_script( 'jquery-ui-widget' );
 			wp_enqueue_script( 'jquery-ui-slider' );
@@ -332,7 +332,7 @@ function ipv_enqueue_scripts( $hook ) {
 			wp_enqueue_script( 'ipv-countrycodes-script' );
 			break;
 
-		case 'ipvenger_page_ipvenger/ipvenger__support': 
+		case 'ipvenger_page_ipvenger/ipvenger__support':
 			break;
 	}
 }
@@ -348,9 +348,9 @@ function ipv_enqueue_styles() {
 }
 
 /*************************************************************************
- * 
+ *
  * Configuration menus
- * 
+ *
  ************************************************************************/
 
 add_action( 'admin_menu', 'ipv_menu_main' );
@@ -358,7 +358,7 @@ add_action( 'admin_menu', 'ipv_menu_main' );
 function ipv_menu_main() {
 
 	$page = add_menu_page(
-	 	'IPVenger Dashboard', 'IPVenger', 
+	 	'IPVenger Dashboard', 'IPVenger',
 		'manage_options',
 		__FILE__,
 		'ipv_general',
@@ -368,7 +368,7 @@ function ipv_menu_main() {
 
 	$page = add_submenu_page(
 		__FILE__,
-	 	'IPVenger Settings', 'General Settings', 
+	 	'IPVenger Settings', 'General Settings',
 		'manage_options',
 		__FILE__,
 		'ipv_general' );
@@ -379,7 +379,7 @@ function ipv_menu_main() {
 		'/ipv_api_key.php' );
 
 	$api_is_valid = ipv_api_keymaster( $ipv_api_key );
-	
+
 	if ( $api_is_valid )  {
 
         $page = add_submenu_page(
@@ -415,7 +415,7 @@ function ipv_menu_main() {
 /**
 	$page = add_submenu_page(
 		__FILE__,
-	 	'IPVenger Support', 'Support', 
+	 	'IPVenger Support', 'Support',
 		'manage_options',
 		__FILE__.'__support',
 		'ipv_support' );
