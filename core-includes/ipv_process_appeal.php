@@ -44,7 +44,7 @@
 	$captcha_valid = false;
 
 	if ( isset( $_SESSION['ipv_captcha_text'] ) &&
-		 ( $_SESSION['ipv_captcha_text'] == $captcha_response ) )
+		 ( strtolower($_SESSION['ipv_captcha_text']) == strtolower($captcha_response) ) )
 	{
 		$captcha_valid = true;
 	}
@@ -55,7 +55,7 @@
 	} else {
 	    $return_to = preg_replace("/(?:\?|%3F).*$/u", '', $return_to);
 	}
-	$return_to = ltrim('/'. rawurlencode($return_to), '/');
+	$return_to = '/'. ltrim($return_to, '/');
 
 	/* if email and captcha pass, insert the appeal and send notify email */
 

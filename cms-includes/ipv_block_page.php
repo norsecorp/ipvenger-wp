@@ -11,22 +11,22 @@ require_once( dirname( __FILE__ ) .
  * function ipv_echo_block() - echo the html for the block page
 */
 
-function ipv_echo_block( 
+function ipv_echo_block(
 	$request_id,
 	$msg_type,
 	$disp,
 	$ip,
 	$return_to,
-	$msg = NULL ) 
+	$msg = NULL )
 {
 
     echo ipv_get_block_header();
 
     echo '<div id="ipv-user-block-message">';
 
-	if ( isset( $msg ) ) 
+	if ( isset( $msg ) )
 		echo urldecode( $msg );
-	else 
+	else
 		echo ipv_get_block_msg( $msg_type );
 
     echo '</div>';
@@ -40,16 +40,16 @@ function ipv_echo_block(
 }
 
 /**
- * function ipv_set_block_header: get block message page header 
+ * function ipv_set_block_header: get block message page header
  *
 */
 function ipv_get_block_header() {
 
 	$theme_stylesheet = ipv_get_stylesheet_url();
-	$block_stylesheet = ipv_get_block_path() . 
+	$block_stylesheet = ipv_get_block_path() .
 		'/css/block_page_style.css';
 	$header_image = ipv_get_logo_url();
-	
+
 	$header_html = '';
 	if ( $header_image !== '' ) {
 		$header_html = "<img src=\"$header_image\">";
@@ -87,13 +87,13 @@ EOH;
 }
 
 /**
- * function ipv_get_block_footer: get block message page footer 
+ * function ipv_get_block_footer: get block message page footer
  *
 */
 function ipv_get_block_footer() {
 
 	$trlr = <<<EOT
-	<div class="protected-by"> 
+	<div class="protected-by">
 		<h3>Protected by IPVenger</h3>
 	</div>
 </div>
@@ -112,7 +112,7 @@ function ipv_get_block_appeal( $request_id, $ip, $return_to ) {
 
 	$ipv_block_path = ipv_get_block_path() . '/core-includes/';
 
-	$captcha_show_url = 
+	$captcha_show_url =
 		$ipv_block_path . '../ajax-services/ipv_show_captcha.php';
 
 	$post_url = $ipv_block_path . 'ipv_process_appeal.php';
@@ -125,8 +125,8 @@ function ipv_get_block_appeal( $request_id, $ip, $return_to ) {
 
 	<div id="ipv-block-appeal-form">
 
-	<p id="ipv-block-appeal-msg1"> 
-		To appeal this block and gain temporary access to the site, 
+	<p id="ipv-block-appeal-msg1">
+		To appeal this block and gain temporary access to the site,
 		please fill in the information below.
 	</p>
 	<p id="ipv-block-appeal-msg2">
@@ -134,9 +134,9 @@ function ipv_get_block_appeal( $request_id, $ip, $return_to ) {
 	</p>
 
 	<form action="$post_url" method=post>
-		<input type="hidden" name="request_id" value=$request_id />
-		<input type="hidden" name="ip" value=$ip />
-		<input type="hidden" name="return_to" value=$return_to />
+		<input type="hidden" name="request_id" value="$request_id" />
+		<input type="hidden" name="ip" value="$ip" />
+		<input type="hidden" name="return_to" value="$return_to" />
 		<br>
 		<div id="ipv-block-email-container">
 			<span id="ipv-block-email-prompt">Your email address: </span>
@@ -146,19 +146,19 @@ function ipv_get_block_appeal( $request_id, $ip, $return_to ) {
 		<div id="ipv-block-captcha-container">
 
 			<div id="ipv-block-captcha-image-container">
-				<img id="ipv-block-captcha" 
+				<img id="ipv-block-captcha"
 					src = "${captcha_show_url}?ip=$ip" />
 			</div>
 
 			<div id="ipv-captcha-controls">
 
 				<span id="ipv-captcha-prompt"> Text shown in image:  </span>
-				<input type="text" name="captcha_response" 
+				<input type="text" name="captcha_response"
 					id="ipv-captcha-response" />
 				<br>
-				<a href="#" 
-					onclick="document.getElementById('ipv-block-captcha').src = 
-						'${captcha_show_url}?ip=$ip&dummy=' + Math.random(); 
+				<a href="#"
+					onclick="document.getElementById('ipv-block-captcha').src =
+						'${captcha_show_url}?ip=$ip&dummy=' + Math.random();
 						return false;">
 					[ Try a Different Image ]
 				</a>
