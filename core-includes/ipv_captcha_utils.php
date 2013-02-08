@@ -2,7 +2,7 @@
 
 /**
  * file ipv_captcha_utils.php
- *  
+ *
  *
  * This file contains utility routines for CAPTCHA caching
  *
@@ -13,7 +13,7 @@ require_once( dirname( __FILE__ ) .  '/../securimage/securimage_cache.php' );
 
 function ipv_gen_captcha() {
 
-	$img = new Securimage();
+	$img = new Securimage_Cache();
 
 	//$img->ttf_file        = './Quiff.ttf';
 	//$img->captcha_type    = Securimage::SI_CAPTCHA_MATHEMATIC; // show a simple math problem instead of text
@@ -32,7 +32,7 @@ function ipv_gen_captcha() {
 
 	// see securimage.php for more options that can be set
 	// generate image and insert via callback to ipv_insert_captcha()
-	$img->show();  
+	$img->show();
 
 }
 
@@ -42,7 +42,7 @@ function ipv_gen_captcha() {
 function ipv_insert_captcha( $image_data, $response ) {
 
 	ipv_db_connect();
-	
+
 	$count = ipv_get_captcha_cache_size();
 
 	$image_data = ipv_escape_string( $image_data );
@@ -50,17 +50,17 @@ function ipv_insert_captcha( $image_data, $response ) {
 	$id = ( ipv_get_captcha_last() + 1 ) % $count;
 
 	/* delete the old as we always want to overwrite anyway */
-	$q_str = 'DELETE FROM ' . IPV_CAPTCHA_CACHE . 
+	$q_str = 'DELETE FROM ' . IPV_CAPTCHA_CACHE .
 			 " WHERE id = $id";
 
 	$q_result = ipv_db_query( $q_str );
 
 	/* insert the fresh captcha */
-	$q_str = 'INSERT ' . IPV_CAPTCHA_CACHE . 
+	$q_str = 'INSERT ' . IPV_CAPTCHA_CACHE .
 			 " VALUES ($id, '$image_data', '$response')";
 
 	$q_result = ipv_db_query( $q_str );
-		
+
 	/* update head and tail pointers */
 	ipv_set_captcha_last( $id );
 	ipv_set_captcha_first( ( $id + 1 ) % $count );
@@ -106,7 +106,7 @@ function ipv_get_next_captcha_index( $ip ) {
 
 	$count = ipv_get_captcha_cache_size();
 	/* EXPLOIT */
-	$q_str = 'SELECT id FROM ' . IPV_CAPTCHA_SERVED . 
+	$q_str = 'SELECT id FROM ' . IPV_CAPTCHA_SERVED .
 			 " WHERE ip = '$ip'";
 
 	$q_result = ipv_db_query( $q_str );
@@ -117,7 +117,7 @@ function ipv_get_next_captcha_index( $ip ) {
 
 	}
 	else $next_idx = ipv_get_captcha_first() + rand( 0, ( $count / 2 ) - 1);
-	
+
 	ipv_db_cleanup();
 
 	return $next_idx;
@@ -127,7 +127,7 @@ function ipv_get_next_captcha_index( $ip ) {
 function ipv_get_next_captcha( $ip, &$captcha, &$response ) {
 
 	ipv_db_connect();
-	
+
 	$idx = ipv_get_next_captcha_index( $ip );
 
 	// if we have hit the end, generate a new captcha
@@ -135,12 +135,12 @@ function ipv_get_next_captcha( $ip, &$captcha, &$response ) {
 		ipv_gen_captcha();
 	}
 
-	$q_str = 'INSERT INTO ' . IPV_CAPTCHA_SERVED . " VALUES ('$ip', $idx) " . 
+	$q_str = 'INSERT INTO ' . IPV_CAPTCHA_SERVED . " VALUES ('$ip', $idx) " .
 			 'ON DUPLICATE KEY UPDATE id = ' . $idx;
 
 	$q_result = ipv_db_query( $q_str );
 
-	$q_str = 'SELECT captcha, response FROM ' . IPV_CAPTCHA_CACHE . 
+	$q_str = 'SELECT captcha, response FROM ' . IPV_CAPTCHA_CACHE .
 			 " WHERE id = $idx";
 
 	$q_result = ipv_db_query( $q_str );
