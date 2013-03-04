@@ -88,7 +88,7 @@ function ipv_validate(
 				break;
 
 			case 417:				// Invalid IP address - disallow
-				$allow = false;
+				$allow = true;
 				$reason = $terse_reason = 'Invalid IP';
 				$done = true;
 				break;
