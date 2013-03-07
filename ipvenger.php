@@ -3,7 +3,7 @@
 Plugin Name: IPVenger
 Plugin URI: http://ipvenger.com/
 Description: IPVenger website security - configuration and reporting
-Version: 1.0.0
+Version: 1.0.1
 Author: NorseCorp
 Author URI: http://ipvenger.com/
 License: GPLv2
