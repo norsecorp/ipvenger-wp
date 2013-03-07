@@ -94,3 +94,7 @@ Just go to ipvenger.com and sign up for an account.
 
 = 1.0.1 =
 * allow=true for 417 return from API to allow internal RFC1918 IP's
+
+= 1.0.2 =
+* add free trial API Key limited to 100 API Calls
+* add admin error alerts for key errors
