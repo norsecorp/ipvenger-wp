@@ -1,3 +1,34 @@
+commit df74ad6a8d7c5f00d6fd063187befbfc7067fd64
+Merge: 04e7209 2f40f4f
+Author: jbelich <jbelich@mannerheim>
+Date:   Thu Mar 7 11:57:13 2013 -0800
+
+    Merge remote-tracking branch 'origin/release'
+
+commit 04e7209c3917a27009693400845326684cc08af1
+Author: jbelich <jbelich@mannerheim>
+Date:   Thu Mar 7 11:55:00 2013 -0800
+
+    changelog and readme backporting
+
+commit e6046ad1683a4c304d94cfe09b87fbb40096f597
+Author: jbelich <jbelich@mannerheim>
+Date:   Thu Mar 7 11:41:47 2013 -0800
+
+    add admin warning box for invalid api key
+
+commit 04b138d171ccc4a55236f57fa39e3327d32e8962
+Author: jbelich <jbelich@mannerheim>
+Date:   Thu Mar 7 11:16:08 2013 -0800
+
+    add default trial key
+
+commit 2f40f4ffb4b623233a04a5463ce9fb60ff7127cc
+Author: jbelich <jbelich@mannerheim>
+Date:   Mon Mar 4 12:09:17 2013 -0800
+
+    upd version
+
 commit 7725d8338f5be73c5155ca1b0cd010397d575c8b
 Author: tomsti <ts@norse-corp.com>
 Date:   Mon Mar 4 11:31:39 2013 -0800
