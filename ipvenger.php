@@ -410,6 +410,8 @@ function ipv_menu_main() {
 
 		add_action( 'admin_print_styles-' . $page, 'ipv_enqueue_styles' );
 
+	} else {
+	    add_action('admin_notices', 'ipv_apikey_warning');
 	}
 
 /**
@@ -424,6 +426,25 @@ function ipv_menu_main() {
 
 **/
 
+}
+
+function ipv_apikey_warning()
+{
+    $q_result = ipv_db_query(
+            'SELECT api_reason from ' . IPV_GLOBAL_SETTINGS .
+            ' WHERE configuration_id = 1'
+    );
+
+    if ( $q_result ) {
+
+        extract( ipv_db_fetch_assoc( $q_result ) );
+
+        $text = ipv_api_get_reason_text( $api_reason );
+
+        echo '<div class="error"><P>' . $text . '</P></div>';
+    }
+
+    ipv_db_cleanup();
 }
 
 function ipv_analytics() {
