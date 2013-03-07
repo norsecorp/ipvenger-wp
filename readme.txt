@@ -1,80 +1,96 @@
 ﻿=== IPVenger ===
-Contributors: sburkett 
-Tags: security, ipviking, block, dangerous, IP
-Requires at least: 3.4.0
-Tested up to: 3.4.2
+Contributors: norse-corp,sburkett,tomsti,jbelich
+Donate link: http://www.ipvenger.com
+Tags: security,block,IP,ipviking,dangerous,protection
+Requires at least: 3.4
+Tested up to: 3.5.1
 Stable tag: trunk
 License: GPLv2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 IPVenger protects your WordPress installation by blocking access by IPs associated with high-risk behavior.
 
 == Description ==
 
-IPVenger uses NorseCorp IPViking real-time threat assessment technology to evaluate each IP requesting access to your WordPress site.
+IPVenger uses NorseCorp IPViking live threat assessment technology to evaluate each IP requesting access to your WordPress site.
 
-When a request comes in, the IP address is sent to the IPViking server, which assigns a numerical risk factor based on real-time data.
+When a request comes in, the IP address is sent to the IPViking server, which assigns a numerical risk factor based on live data.
 
-IPs whose risk factor exceeds a user-configurable threshold are blocked before they can harm your site. 
+IPs whose risk factor exceeds a user-configurable threshold are blocked before they can harm your site. 
 
-Detailed analytics are provided, as is the ability to blacklist specific IP addresses and countries of origin. 
+Detailed analytics are provided, as is the ability to blacklist specific IP addresses and countries of origin. 
 
 == Installation ==
 
-To install the beta IPVenger plugin on your WordPress site you will need the following before getting started:
-1) A zip file of the plugin
-2) A license key
-3) Administrative access to your WordPress site
-4) FTP access to your WordPress site may be required to complete the installation if:
-	● You have moved your wp-config.php to a non-standard location
-	● You have installed certain add-on security plugins
-	● Your web server does not have permission to write to your wp-config.php file
+1.     Login to your WordPress site
+2.     Select “Plugins” from the admin menu
+3.     Select “Add New” from the admin menu
+4.     Search for 'IPVenger'
+5.     Click “Install”
+6.     You must activate the plugin by following the following steps:
+7.     Select "IPVenger" from the admin menu
+8.     Click "General Settings" admin menu option (NOTE: If you see “Activation Error” this means you will need FTP access to manually edit your wp-config.ph file.  Follow the instructions shown on the error page, then reload the page and continue.)
+9.     Still under IPVenger "General Setting" enter your product license key and select “Activate”. Activation will take a few seconds. If you do not have a license key, visit www.ipvenger.com to obtain one.
+10.     Select the type of site that best describes the main function of your website
+11.     Select who you want appeal notifications to go to, under ‘Appeal Settings’
 
 
-SYSTEM REQUIREMENTS
-● Browser Requirements
-	○ Firefox and Chrome
-	○ Internet Explorer version 9
-	○ Interent Explorer 8+ (IE8 will lose minor functionality).
+== Frequently asked questions ==
 
-● WordPress Version(s)
-	○ IPVenger is currently compatible and tested with the following versions of WordPress. Please confirm that your site(s) is running on one of the following versions of WordPress BEFORE you install 
-		■ 3.4.0
-		■ 3.4.1
-		■ 3.4.2
-● Only the MySQL database is currently supported
+= Why is the number of IPs being blocked from my site so high?  =
 
-INSTALLATION STEPS
-● Login to your WordPress site
-● Select "Plugins" > "Add New" from the admin menu
-● Click "Upload"
-● Browse and select the IPVenger installation zip file that you have been provided
-● Click "Install Now"
-● Activate the Plugin
-● Go to the IPVenger 'General Settings' page within your WordPress admin menu
-● If you see "Activation Error" this means you will need FTP access to manually edit your wp-config.ph file. Follow the instructions shown on the error page, then reload the page and continue.
-● Enter your license key and select "Activate" (activation will take a few seconds)
-● Select the type of site that best describes the main function of your website
-● Select who you want block notifications to go to, under 'Email Settings'
+The majority of these requests originate from Botnets which blindly crawl the Internet looking for vulnerabilities to exploit, and can repeatedly attack the same site from different IP addresses. In cases where a site has relatively light traffic, the number of attacks can easily exceed the number of legitimate visitors.
 
-SPECIAL INSTRUCTIONS FOR CUSTOM WP-CONFIG
-IPVenger must update wp-config.php in order to block dangerous sites. In most cases, it can do this automatically, but if your web server does not have write access to wp-config, you will need to do the update manually.
+= I received an Appeal Request email. What do I do? =
 
-If this update is required you will see an “Activation Error” and the changes you need to make to wp-config. The page is reproduced below for completeness:
+If you received an Appeal Request email, it means that a visitor to your website was initially blocked and they are requesting access to your website.
 
-	ACTIVATION ERROR
-	IPVenger could not update wp-config.php. This is most likely because your web server does not have permission to write to this file. To complete the installation and activate IPVenger security you must update the file manually.
+The vast majority of web traffic that is blocked by IPVenger will be automated bots and malicious traffic that won't bother to try to get past this form. However, sometimes legitimate visitors may be blocked. This could happen because they are behind a proxy or because they have an unknown virus. 
 
-	Open your wp-config.php file and locate the line that says:
-      		"/* That's all, stop editing! Happy blogging. */"
+When this happens, you have the ability to grant the visitor the ability to reach your website. That's where the appeals process comes in.
 
-	Above this line, insert the following text, exactly as displayed below, then reload this page to continue.
+When a website visitor is blocked due to a high IP score, they will be presented with a page that displays a message and a form to submit to request access to your website.  Through the IP Control Center, you can grant the visitor permission by selecting the "allow" option in White/Blacklist column dropdown for their IP address.
 
-      		/*** BEGIN IPVENGER CODE BLOCK ***/
-      		$validate_include = dirname(__FILE__) .  '/wp-content/plugins' .
-         		'/ipvenger/core-includes/ipv_websec_validate.php';
-      		if ( file_exists ( $validate_include ) ) {
-         		require_once( $validate_include ); 
-	 		ipv_websec_gatekeeper();
-      		}
-      		/*** END IPVENGER CODE BLOCK ***/
+= Will this service affect my site's performance?  =
 
+When a visitor comes to your site for the first time, the IPQ score and other data about their IP is retrieved from the IPViking server which takes microseconds. The wait time is subject to typical network latency. Once the user has established a session, the overhead is negligible.
+
+= Why does the number of visitors shown differ from my Google Analytics?  =
+
+IPVenger and Google Analytics count traffic in fundamentally different ways. Google Analytics attempts to count unique, human visitors to your site. IPVenger counts visits from automated agents, users with scripting disabled, and legitimate human users. Together, IPVenger and Google Analytics provide you with a complete picture of your site traffic.
+
+= Will this plugin influence my Google analytics?  =
+
+If a user is blocked, they will not be recorded as a visitor by Google Analytics. In practice this will have an extremely minor impact on your data as the vast majority of requests blocked by IPVenger come from Botnets and other automated systems. These automated requests do not appear in Google Analytics because they do not execute the javascript that updates the analytical counter.
+
+= Will this plugin affect my SEO?  =
+
+Only IPs with a history of risky behavior are blocked so "good" bots and crawlers will have access to your page and will see exactly the same content they would without IPVenger protection. Traffic from some high-risk content aggregators may be blocked, but current search engines reduce the page rank when they detect inbound links from these "black hat" sites, so the net effect is likely to be positive.
+
+= How do I Get a Product Key? =
+
+Just go to ipvenger.com and sign up for an account.
+
+== Screenshots ==
+
+1. Advanced Settings
+2. Analytics
+3. Blocked Traffic by Type
+4. Control Center
+5. Country Blacklist
+6. Email Settings
+7. General Settings
+8. Latest IPs Blocked
+9. Message Settings 
+10. Threats by Country
+
+== Changelog ==
+
+= 0.1 =
+* Beta release.
+
+= 1.0.0 =
+* Initial release
+
+= 1.0.1 =
+* allow=true for 417 return from API to allow internal RFC1918 IP's

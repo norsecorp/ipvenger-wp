@@ -1,3 +1,21 @@
+commit 7725d8338f5be73c5155ca1b0cd010397d575c8b
+Author: tomsti <ts@norse-corp.com>
+Date:   Mon Mar 4 11:31:39 2013 -0800
+
+    allow=true for 417 return from API to allow internal RFC1918 IP's
+
+commit afaca174dfd2c17be2bf9de9805812a72e45937c
+Author: jbelich <jbelich@mannerheim>
+Date:   Tue Feb 5 14:09:04 2013 -0800
+
+    better redirect and char case fix
+
+commit 2df71f9d45564de93845a1f68b4f871ed4a169d4
+Author: jbelich <jbelich@mannerheim>
+Date:   Fri Feb 1 14:22:03 2013 -0800
+
+    upd changelog
+
 commit f917042785f24f635483f7c46d1b8fe411a3c0bd
 Author: jbelich <jbelich@mannerheim>
 Date:   Fri Feb 1 14:17:55 2013 -0800
