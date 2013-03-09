@@ -1,9 +1,9 @@
 ﻿=== IPVenger ===
-Contributors: norse-corp,sburkett,tomsti,jbelich
+Contributors: norse-corp,tomsti,jbelich
 Donate link: http://www.ipvenger.com
-Tags: security,block,IP,ipviking,dangerous,protection
+Tags: secure,security,block,sql injection,xss,file inclusion,IP,ipviking,dangerous,protection,anti-hack,hack,attack,exploit,automatic
 Requires at least: 3.4
-Tested up to: 3.5.1
+Tested up to: 3.5.1 
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -12,13 +12,15 @@ IPVenger protects your WordPress installation by blocking access by IPs associat
 
 == Description ==
 
-IPVenger uses NorseCorp IPViking live threat assessment technology to evaluate each IP requesting access to your WordPress site.
+IPVenger uses NorseCorp IPViking LIVE threat intelligence technology to evaluate each IP requesting access to your WordPress site.
 
 When a request comes in, the IP address is sent to the IPViking server, which assigns a numerical risk factor based on live data.
 
 IPs whose risk factor exceeds a user-configurable threshold are blocked before they can harm your site. 
 
 Detailed analytics are provided, as is the ability to blacklist specific IP addresses and countries of origin. 
+
+If you have any questions, please feel free to contact us using our [support area](http://support.ipvenger.com/).
 
 == Installation ==
 
@@ -33,7 +35,6 @@ Detailed analytics are provided, as is the ability to blacklist specific IP addr
 9.     Still under IPVenger "General Setting" enter your product license key and select “Activate”. Activation will take a few seconds. If you do not have a license key, visit www.ipvenger.com to obtain one.
 10.     Select the type of site that best describes the main function of your website
 11.     Select who you want appeal notifications to go to, under ‘Appeal Settings’
-
 
 == Frequently asked questions ==
 
